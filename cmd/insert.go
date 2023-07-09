@@ -55,7 +55,19 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf("failed to get password: %w", err)
 		}
 
-		err = util.WriteToFile(passwordPath, password)
+		GPGID, err := util.GetGPGID(vaultPath)
+		if err != nil {
+			return fmt.Errorf("failed to get gpg-id: %w", err)
+		}
+
+		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
+
+		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
+		if err != nil {
+			return fmt.Errorf("failed to encrypt password: %w", err)
+		}
+
+		err = util.WriteBytesToFile(passwordPath, encryptedPassword)
 		if err != nil {
 			return fmt.Errorf("failed to write password to file: %w", err)
 		}
