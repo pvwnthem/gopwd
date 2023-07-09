@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"syscall"
 
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 func GetPassword() (string, error) {
 	fmt.Print("Enter password: ")
-	password, err := terminal.ReadPassword(int(syscall.Stdin))
+	password, err := term.ReadPassword(int(syscall.Stdin))
 	fmt.Println()
 
 	if err != nil {
@@ -17,7 +17,7 @@ func GetPassword() (string, error) {
 	}
 
 	fmt.Print("Confirm password: ")
-	confirm, err := terminal.ReadPassword(int(syscall.Stdin))
+	confirm, err := term.ReadPassword(int(syscall.Stdin))
 	fmt.Println()
 
 	if err != nil {
