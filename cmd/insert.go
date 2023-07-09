@@ -42,6 +42,19 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf("failed to create directory: %w", err)
 		}
 
+		// Create the password file
+		passwordPath := filepath.Join(dirPath, "password")
+		err = util.CreateFile(passwordPath)
+		if err != nil {
+			return fmt.Errorf("failed to create password file: %w", err)
+		}
+
+		// Ask the user for the password and confirm it before writing it to the file
+		password, err := util.GetPassword()
+		if err != nil {
+			return fmt.Errorf("failed to get password: %w", err)
+		}
+
 		fmt.Printf("Inserted password for %s at %s", site, dirPath)
 
 		return nil

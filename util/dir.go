@@ -37,3 +37,11 @@ func RemoveDirectory(path string) error {
 	}
 	return nil
 }
+
+func CreateFile(path string) error {
+	_, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
