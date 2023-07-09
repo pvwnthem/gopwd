@@ -3,10 +3,10 @@ package util
 import "os"
 
 func GetHomeDir() string {
-	homeDir, homeDirErr := os.UserHomeDir()
+	homeDir, err := os.UserHomeDir()
 
-	if homeDirErr != nil {
-		panic(homeDirErr)
+	if err != nil {
+		panic(err)
 	}
 
 	return homeDir
