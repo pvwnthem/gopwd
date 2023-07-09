@@ -26,6 +26,8 @@ var removeCmd = &cobra.Command{
 			return fmt.Errorf("failed to remove vault: %w", err)
 		}
 
+		fmt.Printf("Successfully removed vault at %s", filepath.Join(Path, Name))
+
 		return nil
 	},
 }
