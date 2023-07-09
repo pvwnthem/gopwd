@@ -10,9 +10,10 @@ import (
 )
 
 var initCmd = &cobra.Command{
-	Use:   "init",
+	Use:   "init [gpg-id]",
 	Short: "Initializes a new vault at the specified path",
 	Long:  "",
+	Args:  cobra.ExactArgs(1),
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		vaultPath := filepath.Join(Path, Name)
@@ -29,6 +30,16 @@ var initCmd = &cobra.Command{
 		err = util.CreateDirectory(vaultPath)
 		if err != nil {
 			return fmt.Errorf("failed to create directory: %w", err)
+		}
+
+		err = util.CreateFile(filepath.Join(vaultPath, ".gpg-id"))
+		if err != nil {
+			return fmt.Errorf("failed to create gpg-id file: %w", err)
+		}
+
+		err = util.WriteToFile(filepath.Join(vaultPath, ".gpg-id"), args[0])
+		if err != nil {
+			return fmt.Errorf("failed to write to gpg-id file: %w", err)
 		}
 
 		fmt.Printf("Successfully created vault at %s", vaultPath)
