@@ -1,0 +1,9 @@
+package cmd
+
+import "github.com/spf13/cobra"
+
+var rootCmd = &cobra.Command{
+	Use:   "gopwd",
+	Short: "A cli password manager written in go",
+	Long:  "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
+}
