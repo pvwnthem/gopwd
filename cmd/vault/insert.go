@@ -15,15 +15,24 @@ var insertCmd = &cobra.Command{
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		site := args[0]
-		//check if the vault exists
+		vaultPath := filepath.Join(Path, Name)
 
-		if _, err := os.Stat(filepath.Join(Path, Name)); os.IsNotExist(err) {
+		// Check if the vault exists
+		_, err := os.Stat(vaultPath)
+		if os.IsNotExist(err) {
 			return fmt.Errorf("vault does not exist")
+		} else if err != nil {
+			return fmt.Errorf("failed to check vault existence: %w", err)
 		}
-		err := os.MkdirAll(filepath.Join(Path, Name, site), 0755)
+
+		// Create the directory
+		dirPath := filepath.Join(vaultPath, site)
+		err = os.MkdirAll(dirPath, 0755)
 		if err != nil {
 			return fmt.Errorf("failed to create directory: %w", err)
 		}
+
+		fmt.Printf("Inserted password for %s at %s", site, dirPath)
 
 		return nil
 	},
