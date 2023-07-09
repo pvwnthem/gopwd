@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var addCmd = &cobra.Command{
+var AddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add is a palette that contains commands to add on to a vault",
 	Long:  "",
@@ -18,7 +18,7 @@ var addCmd = &cobra.Command{
 }
 
 func Execute() {
-	err := addCmd.Execute()
+	err := AddCmd.Execute()
 
 	if err != nil {
 		os.Exit(1)
