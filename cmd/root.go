@@ -3,7 +3,6 @@ package cmd
 import (
 	"os"
 
-	"github.com/pvwnthem/gopwd/cmd/add"
 	"github.com/pvwnthem/gopwd/cmd/vault"
 	"github.com/spf13/cobra"
 )
@@ -28,7 +27,6 @@ func Execute() {
 
 func addSubcommandPalettes() {
 	rootCmd.AddCommand(vault.VaultCmd)
-	rootCmd.AddCommand(add.AddCmd)
 }
 
 func init() {
