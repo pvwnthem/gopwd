@@ -2,9 +2,9 @@ package vault
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
 
@@ -18,16 +18,26 @@ var insertCmd = &cobra.Command{
 		vaultPath := filepath.Join(Path, Name)
 
 		// Check if the vault exists
-		_, err := os.Stat(vaultPath)
-		if os.IsNotExist(err) {
-			return fmt.Errorf("vault does not exist")
-		} else if err != nil {
+		vaultExists, err := util.Exists(vaultPath)
+		if err != nil {
 			return fmt.Errorf("failed to check vault existence: %w", err)
+		}
+		if !vaultExists {
+			return fmt.Errorf("vault does not exist")
+		}
+
+		// Check if the password already exists
+		passwordExists, err := util.Exists(filepath.Join(vaultPath, site))
+		if err != nil {
+			return fmt.Errorf("failed to check password existence: %w", err)
+		}
+		if passwordExists {
+			return fmt.Errorf("password already exists")
 		}
 
 		// Create the directory
 		dirPath := filepath.Join(vaultPath, site)
-		err = os.MkdirAll(dirPath, 0755)
+		err = util.CreateDirectory(dirPath)
 		if err != nil {
 			return fmt.Errorf("failed to create directory: %w", err)
 		}
