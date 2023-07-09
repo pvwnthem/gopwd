@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/pvwnthem/gopwd/cmd/vault"
 	"github.com/spf13/cobra"
 )
 
@@ -23,6 +24,10 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
+}
+
+func addSubcommandPalettes() {
+	rootCmd.AddCommand(vault.VaultCmd)
 }
 
 func init() {

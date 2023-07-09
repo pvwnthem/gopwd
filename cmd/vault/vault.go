@@ -12,7 +12,7 @@ var (
 	Name string
 )
 
-var vaultCmd = &cobra.Command{
+var VaultCmd = &cobra.Command{
 	Use:   "vault",
 	Short: "Vault is a palette that contains commands to manage and create vaults",
 	Long:  "",
@@ -23,7 +23,7 @@ var vaultCmd = &cobra.Command{
 }
 
 func Execute() {
-	err := vaultCmd.Execute()
+	err := VaultCmd.Execute()
 
 	if err != nil {
 		os.Exit(1)
@@ -42,6 +42,6 @@ func init() {
 		panic(err)
 	}
 
-	vaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", filepath.Join(homeDir, ".gopwd"), "The path to create the vault at")
-	vaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
+	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", filepath.Join(homeDir, ".gopwd"), "The path to create the vault at")
+	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
 }
