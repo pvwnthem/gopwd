@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/pvwnthem/gopwd/cmd/add"
@@ -15,7 +14,7 @@ var rootCmd = &cobra.Command{
 	Long:  "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Welcome to gopwd!")
+		cmd.Help()
 	},
 }
 
