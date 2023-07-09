@@ -2,7 +2,6 @@ package util
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -22,13 +21,13 @@ func NewGPGModule(gpgID, gpgPath string) *GPGModule {
 }
 
 func (g *GPGModule) Encrypt(plaintext []byte) ([]byte, error) {
-	tmpfile, err := ioutil.TempFile("", "gpg-encrypt-")
+	tmpfile, err := createTempFile("", "gpg-encrypt-")
 	if err != nil {
 		return nil, err
 	}
 	defer os.Remove(tmpfile.Name())
 
-	err = os.WriteFile(tmpfile.Name(), plaintext, 0600)
+	err = writeFile(tmpfile.Name(), plaintext, 0600)
 	if err != nil {
 		return nil, err
 	}
@@ -41,17 +40,17 @@ func (g *GPGModule) Encrypt(plaintext []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	return os.ReadFile(outputFile)
+	return readFile(outputFile)
 }
 
 func (g *GPGModule) Decrypt(ciphertext []byte) ([]byte, error) {
-	tmpfile, err := ioutil.TempFile("", "gpg-decrypt-")
+	tmpfile, err := createTempFile("", "gpg-decrypt-")
 	if err != nil {
 		return nil, err
 	}
 	defer os.Remove(tmpfile.Name())
 
-	err = os.WriteFile(tmpfile.Name(), ciphertext, 0600)
+	err = writeFile(tmpfile.Name(), ciphertext, 0600)
 	if err != nil {
 		return nil, err
 	}
@@ -64,14 +63,71 @@ func (g *GPGModule) Decrypt(ciphertext []byte) ([]byte, error) {
 		return nil, err
 	}
 
-	return os.ReadFile(outputFile)
+	return readFile(outputFile)
 }
 
 func GetGPGID(path string) (string, error) {
-	gpgID, err := os.ReadFile(filepath.Join(path, ".gpg-id"))
+	file, err := os.Open(filepath.Join(path, ".gpg-id"))
 	if err != nil {
 		return "", err
 	}
+	defer file.Close()
 
-	return strings.TrimSpace(string(gpgID)), nil
+	gpgIDBytes := make([]byte, 0)
+	buffer := make([]byte, 4096)
+	for {
+		n, err := file.Read(buffer)
+		if n > 0 {
+			gpgIDBytes = append(gpgIDBytes, buffer[:n]...)
+		}
+		if err != nil {
+			break
+		}
+	}
+
+	return strings.TrimSpace(string(gpgIDBytes)), nil
+}
+
+// Utility functions to replace ioutil package functions
+
+func createTempFile(dir, prefix string) (*os.File, error) {
+	tmpfile, err := os.CreateTemp(dir, prefix)
+	if err != nil {
+		return nil, err
+	}
+	return tmpfile, nil
+}
+
+func writeFile(filename string, data []byte, perm os.FileMode) error {
+	file, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, perm)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = file.Write(data)
+	return err
+}
+
+func readFile(filename string) ([]byte, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	fileInfo, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+
+	fileSize := fileInfo.Size()
+	buffer := make([]byte, fileSize)
+
+	_, err = file.Read(buffer)
+	if err != nil {
+		return nil, err
+	}
+
+	return buffer, nil
 }
