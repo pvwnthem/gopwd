@@ -25,6 +25,8 @@ var initCmd = &cobra.Command{
 			return fmt.Errorf("failed to create directory: %w", err)
 		}
 
+		fmt.Printf("Successfully created vault at %s", filepath.Join(Path, Name))
+
 		return nil
 	},
 }
