@@ -1,29 +1,32 @@
 package util
 
 import (
-	"errors"
 	"fmt"
+	"syscall"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func GetPassword() (string, error) {
-	var password string
-	var confirm string
-
 	fmt.Print("Enter password: ")
-	_, err := fmt.Scan(&password)
+	password, err := terminal.ReadPassword(int(syscall.Stdin))
+	fmt.Println()
+
 	if err != nil {
-		return "", errors.New("failed to read password")
+		return "", err
 	}
 
 	fmt.Print("Confirm password: ")
-	_, err = fmt.Scan(&confirm)
+	confirm, err := terminal.ReadPassword(int(syscall.Stdin))
+	fmt.Println()
+
 	if err != nil {
-		return "", errors.New("failed to read confirmation")
+		return "", err
 	}
 
-	if password != confirm {
-		return "", errors.New("passwords do not match")
+	if string(password) != string(confirm) {
+		return "", fmt.Errorf("passwords do not match")
 	}
 
-	return password, nil
+	return string(password), nil
 }

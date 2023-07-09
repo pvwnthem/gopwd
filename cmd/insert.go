@@ -55,6 +55,11 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf("failed to get password: %w", err)
 		}
 
+		err = util.WriteToFile(passwordPath, password)
+		if err != nil {
+			return fmt.Errorf("failed to write password to file: %w", err)
+		}
+
 		fmt.Printf("Inserted password for %s at %s", site, dirPath)
 
 		return nil

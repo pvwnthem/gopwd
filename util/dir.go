@@ -1,6 +1,9 @@
 package util
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func GetHomeDir() string {
 	homeDir, err := os.UserHomeDir()
@@ -42,6 +45,14 @@ func CreateFile(path string) error {
 	_, err := os.Create(path)
 	if err != nil {
 		return err
+	}
+	return nil
+}
+
+func WriteToFile(path string, data string) error {
+	err := os.WriteFile(path, []byte(data), 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write to file: %v", err)
 	}
 	return nil
 }
