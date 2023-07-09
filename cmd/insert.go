@@ -1,4 +1,4 @@
-package vault
+package cmd
 
 import (
 	"fmt"
@@ -49,5 +49,5 @@ var insertCmd = &cobra.Command{
 }
 
 func init() {
-	VaultCmd.AddCommand(insertCmd)
+	rootCmd.AddCommand(insertCmd)
 }

@@ -2,9 +2,16 @@ package cmd
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/pvwnthem/gopwd/cmd/vault"
+	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
+)
+
+var (
+	Path string
+	Name string
 )
 
 var rootCmd = &cobra.Command{
@@ -31,4 +38,7 @@ func addSubcommandPalettes() {
 
 func init() {
 	addSubcommandPalettes()
+	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", filepath.Join(util.GetHomeDir(), ".gopwd"), "The path of the vault")
+	rootCmd.PersistentFlags().StringVarP(&Name, "name", "n", "vault", "The name of the vault")
+
 }
