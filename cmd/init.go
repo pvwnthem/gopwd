@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -17,16 +19,18 @@ var initCmd = &cobra.Command{
 	Short: "Initializes a new vault at the specified path",
 	Long:  "",
 
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the vault already exists
 		if _, err := os.Stat(filepath.Join(Path, Name)); !os.IsNotExist(err) {
-			panic("Vault already exists")
+			return errors.New("vault already exists")
 		}
 
 		err := os.MkdirAll(filepath.Join(Path, Name), 0755)
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("failed to create directory: %w", err)
 		}
+
+		return nil
 	},
 }
 
