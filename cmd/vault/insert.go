@@ -1,10 +1,10 @@
-package cmd
+package vault
 
 import (
 	"github.com/spf13/cobra"
 )
 
-var initCmd = &cobra.Command{
+var insertCmd = &cobra.Command{
 	Use:   "insert",
 	Short: "inserts a new password into the vault",
 	Long:  "",
@@ -16,5 +16,5 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(initCmd)
+	VaultCmd.AddCommand(insertCmd)
 }
