@@ -13,7 +13,7 @@ var addCmd = &cobra.Command{
 	Long:  "",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Welcome to gopwd!")
+		fmt.Println("add command")
 	},
 }
 
@@ -23,4 +23,8 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
+}
+
+func init() {
+
 }
