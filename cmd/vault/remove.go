@@ -3,9 +3,9 @@ package vault
 import (
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
 
@@ -15,17 +15,23 @@ var removeCmd = &cobra.Command{
 	Long:  "",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
+		vaultPath := filepath.Join(Path, Name)
+
 		// Check if the vault exists
-		if _, err := os.Stat(filepath.Join(Path, Name)); os.IsNotExist(err) {
+		vaultExists, err := util.Exists(vaultPath)
+		if err != nil {
+			return fmt.Errorf("failed to check vault existence: %w", err)
+		}
+		if !vaultExists {
 			return errors.New("vault does not exist")
 		}
 
-		err := os.RemoveAll(filepath.Join(Path, Name))
+		err = util.RemoveDirectory(vaultPath)
 		if err != nil {
 			return fmt.Errorf("failed to remove vault: %w", err)
 		}
 
-		fmt.Printf("Successfully removed vault at %s", filepath.Join(Path, Name))
+		fmt.Printf("Successfully removed vault at %s", vaultPath)
 
 		return nil
 	},

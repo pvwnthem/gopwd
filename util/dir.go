@@ -29,3 +29,11 @@ func CreateDirectory(path string) error {
 	}
 	return nil
 }
+
+func RemoveDirectory(path string) error {
+	err := os.RemoveAll(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
