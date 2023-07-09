@@ -2,6 +2,8 @@ package vault
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -11,9 +13,19 @@ var insertCmd = &cobra.Command{
 	Short: "Inserts a new password into the vault",
 	Args:  cobra.ExactArgs(1),
 
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		site := args[0]
-		fmt.Println("Inserting password for", site)
+		//check if the vault exists
+
+		if _, err := os.Stat(filepath.Join(Path, Name)); os.IsNotExist(err) {
+			return fmt.Errorf("vault does not exist")
+		}
+		err := os.MkdirAll(filepath.Join(Path, Name, site), 0755)
+		if err != nil {
+			return fmt.Errorf("failed to create directory: %w", err)
+		}
+
+		return nil
 	},
 }
 
