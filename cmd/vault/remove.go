@@ -6,7 +6,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
 
@@ -33,14 +32,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	// Add flags for the remove command (similar to the init command)
-	removeCmd.Flags().StringVarP(&Path, "path", "p", filepath.Join(util.GetHomeDir(), ".gopwd"), "The path to the vault")
-	removeCmd.Flags().StringVarP(&Name, "name", "n", "", "The name of the vault")
-
 	VaultCmd.AddCommand(removeCmd)
-
-	err := removeCmd.MarkFlagRequired("name")
-	if err != nil {
-		panic(err)
-	}
 }
