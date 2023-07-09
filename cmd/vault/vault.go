@@ -32,8 +32,6 @@ func Execute() {
 
 func init() {
 	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", filepath.Join(util.GetHomeDir(), ".gopwd"), "The path to create the vault at")
-	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
-
-	VaultCmd.MarkPersistentFlagRequired("name")
+	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "vault", "The name of the vault")
 
 }

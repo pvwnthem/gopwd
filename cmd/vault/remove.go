@@ -32,5 +32,6 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
+	VaultCmd.MarkPersistentFlagRequired("name")
 	VaultCmd.AddCommand(removeCmd)
 }
