@@ -30,5 +30,19 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
+	homeDir, homeDirErr := os.UserHomeDir()
+
+	if homeDirErr != nil {
+		panic(homeDirErr)
+	}
+
+	initCmd.Flags().StringVarP(&Path, "path", "p", filepath.Join(homeDir, ".gopwd"), "The path to create the vault at")
+	initCmd.Flags().StringVarP(&Name, "name", "n", "", "The name of the vault")
+
 	VaultCmd.AddCommand(initCmd)
+
+	err := initCmd.MarkFlagRequired("name")
+	if err != nil {
+		panic(err)
+	}
 }

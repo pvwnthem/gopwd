@@ -2,7 +2,6 @@ package vault
 
 import (
 	"os"
-	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -18,7 +17,6 @@ var VaultCmd = &cobra.Command{
 	Long:  "",
 
 	Run: func(cmd *cobra.Command, args []string) {
-
 	},
 }
 
@@ -31,17 +29,5 @@ func Execute() {
 }
 
 func init() {
-	homeDir, homeDirErr := os.UserHomeDir()
 
-	if homeDirErr != nil {
-		panic(homeDirErr)
-	}
-
-	err := initCmd.MarkFlagRequired("name")
-	if err != nil {
-		panic(err)
-	}
-
-	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", filepath.Join(homeDir, ".gopwd"), "The path to create the vault at")
-	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
 }
