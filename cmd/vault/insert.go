@@ -7,7 +7,7 @@ import (
 )
 
 var insertCmd = &cobra.Command{
-	Use:   "insert [site]",
+	Use:   "insert [site] [flags]",
 	Short: "Inserts a new password into the vault",
 	Args:  cobra.ExactArgs(1),
 
