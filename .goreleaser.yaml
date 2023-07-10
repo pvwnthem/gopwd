@@ -5,10 +5,21 @@ release:
   draft: true # we only publish after the Windows MSI gets uploaded
   name_template: "GitHub CLI {{.Version}}"
 
+before:
+  hooks:
+    - >-
+      {{ if eq .Runtime.Goos "windows" }}echo{{ end }} make manpages GOPWD_VERSION={{.Version}}
+    - >-
+      {{ if ne .Runtime.Goos "linux" }}echo{{ end }} make completions
+
 builds:
   - id: macos #build:macos
     goos: [darwin]
     goarch: [amd64, arm64]
+    hooks:
+      post:
+        - cmd: ./script/sign '{{ .Path }}'
+          output: true
     binary: bin/gopwd
     main: ./cmd/gopwd
 
@@ -23,6 +34,11 @@ builds:
   - id: windows #build:windows
     goos: [windows]
     goarch: [386, amd64, arm64]
+    hooks:
+      post:
+        - cmd: >-
+            {{ if eq .Runtime.Goos "windows" }}.\script\sign{{ else }}./script/sign{{ end }} '{{ .Path }}'
+          output: true
     binary: bin/gopwd
     main: ./cmd/gopwd
 
