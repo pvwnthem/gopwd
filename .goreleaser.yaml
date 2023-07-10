@@ -1,93 +1,45 @@
-project_name: gopwd
-
-release:
-  prerelease: auto
-  draft: true # we only publish after the Windows MSI gets uploaded
-  name_template: "GitHub CLI {{.Version}}"
-
+# This is an example .goreleaser.yml file with some sensible defaults.
+# Make sure to check the documentation at https://goreleaser.com
 before:
   hooks:
-    - >-
-      {{ if eq .Runtime.Goos "windows" }}echo{{ end }} make manpages GOPWD_VERSION={{.Version}}
-    - >-
-      {{ if ne .Runtime.Goos "linux" }}echo{{ end }} make completions
-
+    # You may remove this if you don't use go modules.
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    - go generate ./...
 builds:
-  - id: macos #build:macos
-    goos: [darwin]
-    goarch: [amd64, arm64]
-    hooks:
-      post:
-        - cmd: ./script/sign '{{ .Path }}'
-          output: true
-    binary: bin/gopwd
-    main: ./cmd/gopwd
-
-  - id: linux #build:linux
-    goos: [linux]
-    goarch: [386, arm, amd64, arm64]
-    env:
+  - env:
       - CGO_ENABLED=0
-    binary: bin/gopwd
-    main: ./cmd/gopwd
-
-  - id: windows #build:windows
-    goos: [windows]
-    goarch: [386, amd64, arm64]
-    hooks:
-      post:
-        - cmd: >-
-            {{ if eq .Runtime.Goos "windows" }}.\script\sign{{ else }}./script/sign{{ end }} '{{ .Path }}'
-          output: true
-    binary: bin/gopwd
-    main: ./cmd/gopwd
+    goos:
+      - linux
+      - windows
+      - darwin
 
 archives:
-  - id: linux-archive
-    builds: [linux]
-    name_template: "gopwd_{{ .Version }}_linux_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    wrap_in_directory: true
-    format: tar.gz
-    rlcp: true
-    files:
-      - LICENSE
-      - ./share/man/man1/gopwd*.1
-  - id: macos-archive
-    builds: [macos]
-    name_template: "gopwd_{{ .Version }}_macOS_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    wrap_in_directory: true
-    format: zip
-    rlcp: true
-    files:
-      - LICENSE
-      - ./share/man/man1/gopwd*.1
-  - id: windows-archive
-    builds: [windows]
-    name_template: "gopwd_{{ .Version }}_windows_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
-    wrap_in_directory: false
-    format: zip
-    rlcp: true
-    files:
-      - LICENSE
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+    - goos: windows
+      format: zip
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
 
-nfpms: #build:linux
-  - license: MIT
-    maintainer: 2x1
-    homepage: https://github.com/pvwnthem/gopwd
-    bindir: /usr
-    dependencies:
-      - nano
-      - gpg
-    description: A cli password manager written in go.
-    formats:
-      - deb
-      - rpm
-    contents:
-      - src: "./share/man/man1/gopwd*.1"
-        dst: "/usr/share/man/man1"
-      - src: "./share/bash-completion/completions/gopwd"
-        dst: "/usr/share/bash-completion/completions/gopwd"
-      - src: "./share/fish/vendor_completions.d/gopwd.fish"
-        dst: "/usr/share/fish/vendor_completions.d/gopwd.fish"
-      - src: "./share/zsh/site-functions/_gopwd"
-        dst: "/usr/share/zsh/site-functions/_gopwd"
+# The lines beneath this are called `modelines`. See `:help modeline`
+# Feel free to remove those if you don't want/use them.
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
