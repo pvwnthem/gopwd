@@ -38,8 +38,7 @@ this service name can be anything, including a website, or a username, or anythi
 ```
 gopwd generate [service that the password is used for] [length of password]
 ```
-this command is the same as insert except it generates a password for you along with inserting that password into the vault. The length of the password is required and must be between 8 and 128 characters long
-
+this command is the same as insert except it generates a password for you along with inserting that password into the vault. 
 ```
 Some example service names and examples of what they look like in the vault: 
 ```
