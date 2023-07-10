@@ -9,7 +9,7 @@ To install and use `gopwd`, follow the steps below:
 
 ### Step 1: Download the Binary
 
-1. Go to the [GitHub releases page](https://github.com/example-user/gopwd/releases) for `gopwd`.
+1. Go to the [GitHub releases page](https://github.com/pvwnthem/gopwd/releases) for `gopwd`.
 2. Locate the release version you want to install. For example, v1.0.2.
 3. Download the binary file suitable for your operating system. Choose the appropriate file based on your system architecture (e.g., 32-bit or 64-bit) and operating system (Linux, macOS, or Windows).
 
