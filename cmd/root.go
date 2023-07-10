@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/cmd/config"
 	"github.com/pvwnthem/gopwd/cmd/vault"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
@@ -37,6 +38,7 @@ func Execute() {
 
 func addSubcommandPalettes() {
 	rootCmd.AddCommand(vault.VaultCmd)
+	rootCmd.AddCommand(config.ConfigCmd)
 }
 
 func init() {
@@ -58,7 +60,6 @@ func initConfig() {
 		// If the config file doesn't exist, use default values
 		Path = filepath.Join(util.GetHomeDir(), ".gopwd")
 		Name = "vault"
-		fmt.Println("Using default values.")
 		return
 	}
 
@@ -77,6 +78,4 @@ func initConfig() {
 		Name = cfg.Name
 	}
 
-	// Print success message
-	fmt.Println("Configuration loaded successfully!")
 }
