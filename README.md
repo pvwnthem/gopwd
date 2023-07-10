@@ -3,6 +3,62 @@
 ## Introduction
 gopwd is a command-line password manager written in Golang. It provides a secure and convenient way to store and manage your passwords.
 
+## Installation Guide
+
+To install and use `gopwd`, follow the steps below:
+
+### Step 1: Download the Binary
+
+1. Go to the [GitHub releases page](https://github.com/example-user/gopwd/releases) for `gopwd`.
+2. Locate the release version you want to install. For example, v1.0.2.
+3. Download the binary file suitable for your operating system. Choose the appropriate file based on your system architecture (e.g., 32-bit or 64-bit) and operating system (Linux, macOS, or Windows).
+
+### Step 2: Extract the Binary (if necessary)
+if you used a system package like a .deb or .rpm this is not necessary, the package manager will take care of this for you.
+If you downloaded a compressed archive file (e.g., `.tar.gz` or `.zip`), extract its contents to a directory of your choice.
+
+### Step 3: Add the Binary to Your System's Path
+
+if you used a system package like a .deb or .rpm this is not necessary, the package manager will take care of this for you.
+To use `gopwd` from anywhere on your system, you need to add the binary file to your system's executable path.
+
+**Linux and macOS:**
+
+1. Open a terminal.
+2. Navigate to the directory where you extracted the binary file.
+3. Use the following command to move the binary to a directory in your system's PATH (e.g., `/usr/local/bin`):
+
+   ```bash
+   sudo mv gopwd /usr/bin/
+   ```
+
+   Enter your password when prompted.
+
+**Windows:**
+
+1. Open File Explorer and navigate to the directory where you extracted the binary file.
+2. Right-click on the `gopwd.exe` file and select "Cut" from the context menu.
+3. Press `Win + X` and select "System" from the menu.
+4. In the System window, click on "Advanced system settings" on the left.
+5. Click on the "Environment Variables" button.
+6. In the "System variables" section, scroll down and select the "Path" variable.
+7. Click on the "Edit" button.
+8. In the "Edit Environment Variable" window, click on the "New" button.
+9. Paste the path to the directory where you extracted the `gopwd.exe` file.
+10. Click "OK" on all windows to save the changes.
+
+### Step 4: Verify the Installation
+
+To verify that `gopwd` is installed correctly, open a new terminal or command prompt and run the following command:
+
+```bash
+gopwd --version
+```
+
+If the installation was successful, you should see the version number of `gopwd` printed on the screen (e.g., "v1.0.2").
+
+Congratulations! You have successfully installed `gopwd` on your system. You can now start using it to manage your passwords.
+
 ## Initializing a Vault
 To initialize a vault, use the following command:
 
