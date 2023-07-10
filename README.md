@@ -35,7 +35,13 @@ this service name can be anything, including a website, or a username, or anythi
 
 #### the service name can be nested aswell, for example if you have multiple github passwords you could set one as github/personal and another as github/work. This is not required but can be useful for organization. If you do not want to use this feature, just use the service name as the service you want to use it for
 
-Example service names and examples of what they look like in the vault: 
+```
+gopwd generate [service that the password is used for] [length of password]
+```
+this command is the same as insert except it generates a password for you along with inserting that password into the vault. The length of the password is required and must be between 8 and 128 characters long
+
+```
+Some example service names and examples of what they look like in the vault: 
 ```
 github 
 - vault
