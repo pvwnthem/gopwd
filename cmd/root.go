@@ -35,6 +35,7 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		fmt.Println(Name) // print name of vault on top of dir structure
 		err = util.PrintDirectoryTree(filepath.Join(Path, Name), "")
 		if err != nil {
 			fmt.Printf("Error printing directory tree: %v\n", err)
