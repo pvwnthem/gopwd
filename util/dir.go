@@ -3,7 +3,6 @@ package util
 import (
 	"fmt"
 	"io/fs"
-	"io/ioutil"
 	"os"
 )
 
@@ -44,7 +43,7 @@ func RemoveDirectory(path string) error {
 }
 
 func CreateTempFileFromBytes(content []byte) *os.File {
-	tmpfile, _ := ioutil.TempFile("", "tempfile")
+	tmpfile, _ := os.CreateTemp("", "tempfile")
 	tmpfile.Write(content)
 	tmpfile.Close()
 
@@ -55,7 +54,7 @@ func CreateTempFileFromBytes(content []byte) *os.File {
 
 // ReadBytesFromFile reads the content of a file and returns it as a byte slice.
 func ReadBytesFromFile(filePath string) ([]byte, error) {
-	content, err := ioutil.ReadFile(filePath)
+	content, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}

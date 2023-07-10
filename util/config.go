@@ -3,7 +3,7 @@ package util
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"path/filepath"
 )
@@ -21,7 +21,7 @@ func LoadConfig(configFile string) (*Config, error) {
 	}
 	defer file.Close()
 
-	data, err := ioutil.ReadAll(file)
+	data, err := io.ReadAll(file)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,9 @@ func LoadConfig(configFile string) (*Config, error) {
 
 func InitConfig(Path string, Name string, configFile string) (string, string, string, error) {
 	// Use default configuration file path
-	configFile = filepath.Join(GetHomeDir(), ".gopwd", "config.json")
+	if configFile == "" {
+		configFile = filepath.Join(GetHomeDir(), ".gopwd", "config.json")
+	}
 
 	// Check if the config file exists
 	_, err := os.Stat(configFile)
