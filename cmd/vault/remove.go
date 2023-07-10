@@ -25,9 +25,16 @@ var removeCmd = &cobra.Command{
 			return fmt.Errorf("vault does not exist at %s", vaultPath)
 		}
 
-		err = util.RemoveDirectory(vaultPath)
+		action, err := util.ConfirmAction()
 		if err != nil {
-			return fmt.Errorf("failed to remove vault: %w", err)
+			return fmt.Errorf("failed to confirm action: %w", err)
+		}
+
+		if action {
+			err = util.RemoveDirectory(vaultPath)
+			if err != nil {
+				return fmt.Errorf("failed to remove vault: %w", err)
+			}
 		}
 
 		fmt.Printf("Successfully removed vault at %s", vaultPath)
