@@ -2,11 +2,12 @@ package vault
 
 import (
 	"os"
-	"path/filepath"
 
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
+
+var configFile string
 
 var (
 	Path string
@@ -31,7 +32,8 @@ func Execute() {
 }
 
 func init() {
-	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", filepath.Join(util.GetHomeDir(), ".gopwd"), "The path to create the vault at")
-	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "vault", "The name of the vault")
+	cobra.OnInitialize(func() { Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile) })
+	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path to create the vault at")
+	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
 
 }

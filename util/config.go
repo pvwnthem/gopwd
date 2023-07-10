@@ -2,8 +2,10 @@ package util
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 // Config holds the configuration data
@@ -31,4 +33,37 @@ func LoadConfig(configFile string) (*Config, error) {
 	}
 
 	return &config, nil
+}
+
+func InitConfig(Path string, Name string, configFile string) (string, string, string, error) {
+	// Use default configuration file path
+	configFile = filepath.Join(GetHomeDir(), ".gopwd", "config.json")
+
+	// Check if the config file exists
+	_, err := os.Stat(configFile)
+	if err != nil {
+		// If the config file doesn't exist, use default values
+		Path = filepath.Join(GetHomeDir(), ".gopwd")
+		Name = "vault"
+		return Path, Name, configFile, nil
+	}
+
+	// Load configuration from file
+	cfg, err := LoadConfig(configFile)
+	if err != nil {
+		fmt.Println("Failed to load config file:", err)
+		os.Exit(1)
+		return "", "", "", err
+	}
+
+	// Override flags with configuration values
+	if Path == "" {
+		Path = cfg.Path
+	}
+	if Name == "" {
+		Name = cfg.Name
+	}
+
+	return Path, Name, configFile, nil
+
 }
