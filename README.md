@@ -39,7 +39,6 @@ this service name can be anything, including a website, or a username, or anythi
 gopwd generate [service that the password is used for] [length of password]
 ```
 this command is the same as insert except it generates a password for you along with inserting that password into the vault. 
-```
 Some example service names and examples of what they look like in the vault: 
 ```
 github 
@@ -72,3 +71,8 @@ this command shows the password for the service that you provide.
 gopwd rm [service that the password is used for]
 ```
 this command removes the password and folder for the service that you provide.
+
+```
+gopwd edit [service that the password is used for]
+```
+this opens up a nano window and allows you to edit the password or add any metada you want such as an email or username if you use different ones for different accounts
