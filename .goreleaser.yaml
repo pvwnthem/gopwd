@@ -42,7 +42,7 @@ nfpms: #build:linux
   - license: MIT
     maintainer: 2x1
     homepage: https://github.com/pvwnthem/gopwd
-    bindir: /usr
+    bindir: /usr/bin
     dependencies:
       - nano
       - gpg
