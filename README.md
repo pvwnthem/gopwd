@@ -52,10 +52,10 @@ To use `gopwd` from anywhere on your system, you need to add the binary file to 
 To verify that `gopwd` is installed correctly, open a new terminal or command prompt and run the following command:
 
 ```bash
-gopwd --version
+gopwd help
 ```
 
-If the installation was successful, you should see the version number of `gopwd` printed on the screen (e.g., "v1.0.2").
+If the installation was successful, you should see commands `gopwd` printed on the screen.
 
 Congratulations! You have successfully installed `gopwd` on your system. You can now start using it to manage your passwords.
 
