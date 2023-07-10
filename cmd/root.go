@@ -40,7 +40,7 @@ func addSubcommandPalettes() {
 }
 
 func init() {
-	cobra.OnInitialize(func() { util.InitConfig(Path, Name, configFile) })
+	cobra.OnInitialize(func() { Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile) })
 
 	addSubcommandPalettes()
 	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path of the vault")

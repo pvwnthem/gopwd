@@ -1,7 +1,9 @@
 package util
 
 import (
+	"crypto/rand"
 	"fmt"
+	"math/big"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -130,4 +132,22 @@ func readFile(filename string) ([]byte, error) {
 	}
 
 	return buffer, nil
+}
+
+func GeneratePassword(length string) string {
+	characters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{};':\",./<>?"
+
+	// Convert the length string to an integer
+	n, _ := new(big.Int).SetString(length, 10)
+	passwordLength := int(n.Int64())
+
+	// Generate the password
+	var password []byte
+	for i := 0; i < passwordLength; i++ {
+		randomIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(characters))))
+		character := characters[randomIndex.Int64()]
+		password = append(password, byte(character))
+	}
+
+	return string(password)
 }
