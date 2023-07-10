@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"io/fs"
+	"io/ioutil"
 	"os"
 )
 
@@ -40,6 +41,26 @@ func RemoveDirectory(path string) error {
 		return err
 	}
 	return nil
+}
+
+func CreateTempFileFromBytes(content []byte) *os.File {
+	tmpfile, _ := ioutil.TempFile("", "tempfile")
+	tmpfile.Write(content)
+	tmpfile.Close()
+
+	_ = os.Chmod(tmpfile.Name(), 0644) // Set file permission to read-only
+
+	return tmpfile
+}
+
+// ReadBytesFromFile reads the content of a file and returns it as a byte slice.
+func ReadBytesFromFile(filePath string) ([]byte, error) {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	return content, nil
 }
 
 func ReadFile(path string) ([]byte, error) {

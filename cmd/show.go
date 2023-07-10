@@ -53,7 +53,7 @@ var showCmd = &cobra.Command{
 			return fmt.Errorf("failed to decrypt password: %w", err)
 		}
 
-		fmt.Printf("Password for %s: %s", site, decrypted)
+		fmt.Printf("%s", decrypted)
 
 		return nil
 	},
