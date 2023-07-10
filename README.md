@@ -1,47 +1,82 @@
-# gopwd
-### gopwd is a pass like terminal based password manager written in golang
+# gopwd - A Terminal-Based Password Manager in Golang
 
-## Initalizing a vault
-#### run gopwd vault init (-p path to the vault (optional). Default - $HOME/.gopwd) (-n name of the vault (optional). Default - vault) 
-EXAMPLE
+## Introduction
+gopwd is a command-line password manager written in Golang. It provides a secure and convenient way to store and manage your passwords.
+
+## Initializing a Vault
+To initialize a vault, use the following command:
+
+```
+gopwd vault init [-p <path>] [-n <name>]
+```
+
+- `-p` (optional): Specify the path to the vault (default: `$HOME/.gopwd`).
+- `-n` (optional): Specify the name of the vault (default: "vault").
+
+**Example:**
+
 ```
 gopwd vault init -p /home/'your username'/vaults -n main
 ```
 
-#### this will initailize a vault at /home/'your username'/vaults/main
+This command initializes a vault at `/home/'your username'/vaults/main`.
 
-### Additional information about initalizing a vault
-if you use the default options, all other commands can be carried out without flags or a config file, they will use the default location. HOWEVER, if you used a custom location it is recommended to setup the path and name of your vault in a config file. If you do not do this, in order to use your custom vault you will have to set your path flag and name flag for every command you run (using -p [path] and -n [name]). Having a config will automatically fill in the path and name inside the config to the command so you don't have to
-To setup a config either run
-```
-gopwd config init -p "path to where your vault is NOT THE FULL PATH, JUST THE PATH TO THE DIR IT'S IN" -n "name of your vault (name of the actual vault folder)"
-```
-or run
-```
-gopwd config init 
-```
-and then set the config options manually with
-```
-gopwd config set "field" "value"
-```
-the field will be either "path" or "name"
-### You can change this config anytime using the above command
+### Additional Information on Initializing a Vault
+If you use the default options, all other commands can be executed without specifying flags or a config file. They will automatically use the default vault location. However, if you have used a custom location, it is recommended to set up the path and name of your vault in a config file. Without a config file, you will need to specify the path and name flags for every command you run (`-p [path]` and `-n [name]`).
+
+To set up a config file, you have two options:
+
+1. Run the following command:
+
+   ```
+   gopwd config init -p "path to the directory where your vault is (not the full path)" -n "name of your vault (name of the actual vault folder)"
+   ```
+
+2. Run the following command to initialize the config file:
+
+   ```
+   gopwd config init
+   ```
+
+   Then, manually set the config options using:
+
+   ```
+   gopwd config set <field> <value>
+   ```
+
+   The `<field>` can be either "path" or "name".
+
+You can change the config settings anytime using the above commands.
+
 ## Commands
-```
-gopwd insert [service that the password is used for]
-```
-#### this will insert a password into your vault for the service you specify
-this service name can be anything, including a website, or a username, or anything else you want to use it for. IMPORTANT: it can not contain spaces, if you want to use a space use a dash (-) instead, it can also not contain any special characters other than a dash (-) or an underscore (_)
 
-#### the service name can be nested aswell, for example if you have multiple github passwords you could set one as github/personal and another as github/work. This is not required but can be useful for organization. If you do not want to use this feature, just use the service name as the service you want to use it for
+### Inserting a Password
+
+To insert a password into your vault for a specific service, use the following command:
 
 ```
-gopwd generate [service that the password is used for] [length of password]
+gopwd insert <service>
 ```
-this command is the same as insert except it generates a password for you along with inserting that password into the vault. 
-Some example service names and examples of what they look like in the vault: 
+
+- `<service>`: Specify the service for which the password is used. The service name can be anything, including a website, username, or any other identifier. **Important:** The service name cannot contain spaces. Use a dash (-) instead. Special characters other than a dash or underscore are also not allowed.
+
+You can nest the service names to organize your passwords. For example, if you have multiple GitHub passwords, you can set one as `github/personal` and another as `github/work`. Nesting is optional and is useful for organizational purposes. If you don't want to use this feature, simply use the service name as the service identifier.
+
+### Generating a Password
+
+To generate a password for a specific service and insert it into the vault, use the following command:
+
 ```
-github 
+gopwd generate <service> <length>
+```
+
+- `<service>`: Specify the service for which the password is used.
+- `<length>`: Specify the length of the generated password.
+
+Example service names and their representation in the vault:
+
+```
+github
 - vault
  | - github
     | - password
@@ -60,19 +95,39 @@ github/work and github/personal in the same vault
     | - work
        | - password
 ```
-#### dont worry about the password file, that is just your encrypted password which will be automactically retrieved when you run the command "gopwd show [service name]"
+
+**Note:** The password file is the encrypted version of your password, which will be automatically retrieved when you run the command `gopwd show <service>`.
+
+### Showing a Password
+
+To view the password for a specific service, use the following command:
 
 ```
-gopwd show [service that the password is used for]
+gopwd show <service>
 ```
-this command shows the password for the service that you provide.
+
+- `<service>`: Specify the service for which you want to view the password.
+
+### Removing a Password
+
+To remove a password and its associated folder for a specific service, use the following command:
 
 ```
-gopwd rm [service that the password is used for]
+gopwd rm <service>
 ```
-this command removes the password and folder for the service that you provide.
+
+- `<service>`: Specify the service for which you want to remove the password.
+
+### Editing a Password
+
+To edit a password or add metadata such as an email or username, use the following command:
 
 ```
-gopwd edit [service that the password is used for]
+gopwd edit <service>
 ```
-this opens up a nano window and allows you to edit the password or add any metada you want such as an email or username if you use different ones for different accounts
+
+- `<service>`: Specify the service for which you want to edit the password.
+
+This command opens a Nano text editor window, allowing you to modify the password or add any desired metadata.
+
+Feel free to reach out if you have any further questions!
