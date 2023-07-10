@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"path/filepath"
 )
 
 func GetHomeDir() string {
@@ -99,5 +100,31 @@ func WriteBytesToFile(path string, data []byte) error {
 	if err != nil {
 		return fmt.Errorf("failed to write to file: %v", err)
 	}
+	return nil
+}
+
+func PrintDirectoryTree(dirPath string, indent string) error {
+	entries, err := os.ReadDir(dirPath)
+	if err != nil {
+		return err
+	}
+
+	for i, entry := range entries {
+		if entry.IsDir() {
+			if i == len(entries)-1 {
+				fmt.Printf("%s└── %s\n", indent, entry.Name())
+			} else {
+				fmt.Printf("%s├── %s\n", indent, entry.Name())
+			}
+		}
+		if entry.IsDir() {
+			subDirPath := filepath.Join(dirPath, entry.Name())
+			err := PrintDirectoryTree(subDirPath, indent+"│   ")
+			if err != nil {
+				fmt.Printf("Error printing subdirectory '%s': %v\n", subDirPath, err)
+			}
+		}
+	}
+
 	return nil
 }
