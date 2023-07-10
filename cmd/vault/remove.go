@@ -1,7 +1,6 @@
 package vault
 
 import (
-	"errors"
 	"fmt"
 	"path/filepath"
 
@@ -23,7 +22,7 @@ var removeCmd = &cobra.Command{
 			return fmt.Errorf("failed to check vault existence: %w", err)
 		}
 		if !vaultExists {
-			return errors.New("vault does not exist")
+			return fmt.Errorf("vault does not exist at %s", vaultPath)
 		}
 
 		err = util.RemoveDirectory(vaultPath)

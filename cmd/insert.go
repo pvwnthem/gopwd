@@ -23,7 +23,7 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf("failed to check vault existence: %w", err)
 		}
 		if !vaultExists {
-			return fmt.Errorf("vault does not exist")
+			return fmt.Errorf("vault does not exist at %s", vaultPath)
 		}
 
 		// Check if the password already exists

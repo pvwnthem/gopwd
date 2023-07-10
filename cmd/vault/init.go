@@ -1,7 +1,6 @@
 package vault
 
 import (
-	"errors"
 	"fmt"
 	"path/filepath"
 
@@ -24,7 +23,7 @@ var initCmd = &cobra.Command{
 			return fmt.Errorf("failed to check vault existence: %w", err)
 		}
 		if vaultExists {
-			return errors.New("vault already exists")
+			return fmt.Errorf("vault already exists at %s", vaultPath)
 		}
 
 		err = util.CreateDirectory(vaultPath)
