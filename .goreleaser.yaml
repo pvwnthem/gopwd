@@ -38,7 +38,18 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-
+nfpms: #build:linux
+  - license: MIT
+    maintainer: 2x1
+    homepage: https://github.com/pvwnthem/gopwd
+    bindir: /usr
+    dependencies:
+      - nano
+      - gpg
+    description: A cli password manager written in go.
+    formats:
+      - deb
+      - rpm
 # The lines beneath this are called `modelines`. See `:help modeline`
 # Feel free to remove those if you don't want/use them.
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
