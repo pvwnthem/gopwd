@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"io/fs"
 	"os"
 )
 
@@ -39,6 +40,22 @@ func RemoveDirectory(path string) error {
 		return err
 	}
 	return nil
+}
+
+func ReadFile(path string) ([]byte, error) {
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	return file, nil
+}
+
+func ReadDirectory(path string) ([]fs.DirEntry, error) {
+	files, err := os.ReadDir(path)
+	if err != nil {
+		return nil, err
+	}
+	return files, nil
 }
 
 func CreateFile(path string) error {
