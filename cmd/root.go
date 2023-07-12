@@ -7,6 +7,7 @@ import (
 
 	"github.com/pvwnthem/gopwd/cmd/config"
 	"github.com/pvwnthem/gopwd/cmd/vault"
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -23,23 +24,24 @@ var rootCmd = &cobra.Command{
 	Short: "A cli password manager written in go",
 	Long:  "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
 
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the vault exists
-		vaultExists, err := util.Exists(filepath.Join(Path, Name))
+		vaultPath := filepath.Join(Path, Name)
+		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			return fmt.Errorf(constants.ErrVaultExistence, err)
 		}
 		if !vaultExists {
-			fmt.Println("Vault does not exist")
-			os.Exit(1)
+			return fmt.Errorf(constants.ErrVaultDoesNotExist, vaultPath)
 		}
 
 		fmt.Println(Name) // print name of vault on top of dir structure
 		err = util.PrintDirectoryTree(filepath.Join(Path, Name), "")
 		if err != nil {
-			fmt.Printf("Error printing directory tree: %v\n", err)
+			return fmt.Errorf("error printing directory tree: %w", err)
 		}
+
+		return nil
 
 	},
 }
