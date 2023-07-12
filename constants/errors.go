@@ -10,6 +10,7 @@ const (
 	ErrDirectoryCreation    = "failed to create directory: %w"
 	ErrGetGPGID             = "failed to get gpg-id: %w"
 	ErrPasswordEncryption   = "failed to encrypt password: %w"
+	ErrPasswordDecryption   = "failed to decrypt password: %w"
 	ErrPasswordWrite        = "failed to write password to file: %w"
 	ErrActionConfirm        = "failed to confirm action: %w"
 )
