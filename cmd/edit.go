@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -22,24 +23,24 @@ var editCmd = &cobra.Command{
 		// Check if the vault exists
 		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to check vault existence: %w", err)
+			return fmt.Errorf(constants.ErrVaultExistence, err)
 		}
 		if !vaultExists {
-			return fmt.Errorf("vault does not exist at %s", vaultPath)
+			return fmt.Errorf(constants.ErrVaultDoesNotExist, vaultPath)
 		}
 
 		// Check if the password exists
 		passwordExists, err := util.Exists(filepath.Join(vaultPath, site))
 		if err != nil {
-			return fmt.Errorf("failed to check password existence: %w", err)
+			return fmt.Errorf(constants.ErrPasswordExistence, err)
 		}
 		if !passwordExists {
-			return fmt.Errorf("password does not exist for %s", site)
+			return fmt.Errorf(constants.ErrPasswordDoesNotExist)
 		}
 
 		GPGID, err := util.GetGPGID(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to get gpg-id: %w", err)
+			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
 		GPGModule := util.NewGPGModule(GPGID, util.GetGPGPath())
@@ -48,7 +49,7 @@ var editCmd = &cobra.Command{
 		file, _ := util.ReadBytesFromFile(passwordPath)
 		decryptedContent, err := GPGModule.Decrypt(file)
 		if err != nil {
-			return fmt.Errorf("failed to decrypt password file: %w", err)
+			return fmt.Errorf(constants.ErrPasswordDecryption, err)
 		}
 
 		// Create a temporary file with the decrypted content
