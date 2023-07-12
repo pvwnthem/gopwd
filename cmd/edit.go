@@ -55,7 +55,7 @@ var editCmd = &cobra.Command{
 		tmpfile := util.CreateTempFileFromBytes(decryptedContent)
 
 		// Open the temporary file using Nano
-		cmde := exec.Command("nano", tmpfile.Name())
+		cmde := exec.Command(util.GetTextEditor(), tmpfile.Name())
 		cmde.Stdin = os.Stdin
 		cmde.Stdout = os.Stdout
 		cmde.Stderr = os.Stderr

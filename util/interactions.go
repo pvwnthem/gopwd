@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"runtime"
 	"syscall"
 
 	"golang.org/x/term"
@@ -44,4 +45,11 @@ func ConfirmAction() (bool, error) {
 	}
 
 	return false, nil
+}
+
+func GetTextEditor() string {
+	if runtime.GOOS == "windows" {
+		return "notepad"
+	}
+	return "nano"
 }
