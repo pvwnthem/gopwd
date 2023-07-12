@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -20,15 +21,15 @@ var initCmd = &cobra.Command{
 		// Check if the vault already exists
 		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to check vault existence: %w", err)
+			return fmt.Errorf(constants.ErrVaultExistence, err)
 		}
 		if vaultExists {
-			return fmt.Errorf("vault already exists at %s", vaultPath)
+			return fmt.Errorf(constants.ErrVaultDoesExist, vaultPath)
 		}
 
 		err = util.CreateDirectory(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to create directory: %w", err)
+			return fmt.Errorf(constants.ErrDirectoryCreation, err)
 		}
 
 		err = util.CreateFile(filepath.Join(vaultPath, ".gpg-id"))
