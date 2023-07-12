@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -19,15 +20,15 @@ var removeCmd = &cobra.Command{
 		// Check if the vault exists
 		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to check vault existence: %w", err)
+			return fmt.Errorf(constants.ErrVaultExistence, err)
 		}
 		if !vaultExists {
-			return fmt.Errorf("vault does not exist at %s", vaultPath)
+			return fmt.Errorf(constants.ErrVaultDoesNotExist, vaultPath)
 		}
 
 		action, err := util.ConfirmAction()
 		if err != nil {
-			return fmt.Errorf("failed to confirm action: %w", err)
+			return fmt.Errorf(constants.ErrActionConfirm, err)
 		}
 
 		if action {
