@@ -8,6 +8,11 @@ import (
 	"path/filepath"
 )
 
+var (
+	DefaultPath = filepath.Join(GetHomeDir(), ".gopwd")
+	DefaultName = "vault"
+)
+
 // Config holds the configuration data
 type Config struct {
 	Path string `json:"path"`
@@ -45,8 +50,8 @@ func InitConfig(Path string, Name string, configFile string) (string, string, st
 	_, err := os.Stat(configFile)
 	if err != nil {
 		// If the config file doesn't exist, use default values
-		Path = filepath.Join(GetHomeDir(), ".gopwd")
-		Name = "vault"
+		Path = DefaultPath
+		Name = DefaultName
 		return Path, Name, configFile, nil
 	}
 

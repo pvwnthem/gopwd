@@ -41,6 +41,14 @@ var initCmd = &cobra.Command{
 			Name: Name,
 		}
 
+		if Path == "" {
+			config.Path = util.DefaultPath
+		}
+
+		if Name == "" {
+			config.Name = util.DefaultName
+		}
+
 		// Marshal the config object to JSON
 		configJSON, err := json.MarshalIndent(config, "", "  ")
 		if err != nil {
@@ -57,7 +65,5 @@ var initCmd = &cobra.Command{
 }
 
 func init() {
-	initCmd.MarkPersistentFlagRequired("name")
-	initCmd.MarkPersistentFlagRequired("path")
 	ConfigCmd.AddCommand(initCmd)
 }
