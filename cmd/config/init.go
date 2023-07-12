@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -22,10 +23,10 @@ var initCmd = &cobra.Command{
 		// Check if the config file exists
 		configExists, err := util.Exists(filepath.Join(util.GetHomeDir(), ".gopwd", "config.json"))
 		if err != nil {
-			return fmt.Errorf("failed to check config existence: %w", err)
+			return fmt.Errorf(constants.ErrConfigExistence, err)
 		}
 		if configExists {
-			return errors.New("config already exists")
+			return errors.New(constants.ErrConfigDoesExist)
 		}
 
 		// Create the config file
@@ -43,13 +44,13 @@ var initCmd = &cobra.Command{
 		// Marshal the config object to JSON
 		configJSON, err := json.MarshalIndent(config, "", "  ")
 		if err != nil {
-			return fmt.Errorf("failed to marshal config to JSON: %w", err)
+			return fmt.Errorf(constants.ErrJSONMarshal, err)
 		}
 
 		// Write the JSON to the config file
 		err = os.WriteFile(configPath, configJSON, 0644)
 		if err != nil {
-			return fmt.Errorf("failed to write config file: %w", err)
+			return fmt.Errorf(constants.ErrConfigWrite, err)
 		}
 		return nil
 	},

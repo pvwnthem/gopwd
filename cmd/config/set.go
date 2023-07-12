@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -25,17 +26,24 @@ var setCmd = &cobra.Command{
 
 		configPath := filepath.Join(util.GetHomeDir(), ".gopwd", "config.json")
 
+		configExists, err := util.Exists(filepath.Join(util.GetHomeDir(), ".gopwd", "config.json"))
+		if err != nil {
+			return fmt.Errorf(constants.ErrConfigExistence, err)
+		}
+		if configExists {
+			return errors.New(constants.ErrConfigDoesExist)
+		}
 		// Read the config file
 		configJSON, err := os.ReadFile(configPath)
 		if err != nil {
-			return fmt.Errorf("failed to read config file: %w", err)
+			return fmt.Errorf(constants.ErrConfigRead, err)
 		}
 
 		// Unmarshal the config object from JSON
 		var config util.Config
 		err = json.Unmarshal(configJSON, &config)
 		if err != nil {
-			return fmt.Errorf("failed to unmarshal config from JSON: %w", err)
+			return fmt.Errorf(constants.ErrJSONUnmarshal, err)
 		}
 
 		// Modify the specified field
@@ -49,13 +57,13 @@ var setCmd = &cobra.Command{
 		// Marshal the modified config object to JSON
 		configJSON, err = json.MarshalIndent(config, "", "  ")
 		if err != nil {
-			return fmt.Errorf("failed to marshal config to JSON: %w", err)
+			return fmt.Errorf(constants.ErrJSONMarshal, err)
 		}
 
 		// Write the JSON to the config file
 		err = os.WriteFile(configPath, configJSON, 0644)
 		if err != nil {
-			return fmt.Errorf("failed to write config file: %w", err)
+			return fmt.Errorf(constants.ErrConfigWrite, err)
 		}
 
 		fmt.Println("Successfully modified config")
