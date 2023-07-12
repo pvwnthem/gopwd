@@ -9,7 +9,7 @@ import (
 )
 
 var removeCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "rm",
 	Short: "Removes an existing vault at the specified path",
 	Long:  "",
 
