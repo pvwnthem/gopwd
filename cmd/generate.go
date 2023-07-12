@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -21,26 +22,26 @@ var generateCmd = &cobra.Command{
 		// Check if the vault exists
 		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to check vault existence: %w", err)
+			return fmt.Errorf(constants.ErrVaultDoesNotExist, err)
 		}
 		if !vaultExists {
-			return fmt.Errorf("vault does not exist at %s", vaultPath)
+			return fmt.Errorf(constants.ErrVaultDoesNotExist, vaultPath)
 		}
 
 		// Check if the password already exists
 		passwordExists, err := util.Exists(filepath.Join(vaultPath, site))
 		if err != nil {
-			return fmt.Errorf("failed to check password existence: %w", err)
+			return fmt.Errorf(constants.ErrPasswordExistence, err)
 		}
 		if passwordExists {
-			return fmt.Errorf("password already exists")
+			return fmt.Errorf(constants.ErrPasswordDoesExist)
 		}
 
 		// Create the directory
 		dirPath := filepath.Join(vaultPath, site)
 		err = util.CreateDirectory(dirPath)
 		if err != nil {
-			return fmt.Errorf("failed to create directory: %w", err)
+			return fmt.Errorf(constants.ErrDirectoryCreation, err)
 		}
 
 		// Generate the password
@@ -48,21 +49,21 @@ var generateCmd = &cobra.Command{
 
 		GPGID, err := util.GetGPGID(vaultPath)
 		if err != nil {
-			return fmt.Errorf("failed to get gpg-id: %w", err)
+			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
 		GPGModule := util.NewGPGModule(GPGID, util.GetGPGPath())
 
 		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
 		if err != nil {
-			return fmt.Errorf("failed to encrypt password: %w", err)
+			return fmt.Errorf(constants.ErrPasswordEncryption, err)
 		}
 
 		// Create the password file
 		passwordPath := filepath.Join(dirPath, "password")
 		err = util.WriteBytesToFile(passwordPath, encryptedPassword)
 		if err != nil {
-			return fmt.Errorf("failed to write password to file: %w", err)
+			return fmt.Errorf(constants.ErrPasswordWrite, err)
 		}
 
 		fmt.Printf("Inserted password for %s at %s\n", site, dirPath)
