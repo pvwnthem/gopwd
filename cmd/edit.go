@@ -42,7 +42,7 @@ var editCmd = &cobra.Command{
 			return fmt.Errorf("failed to get gpg-id: %w", err)
 		}
 
-		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
+		GPGModule := util.NewGPGModule(GPGID, util.GetGPGPath())
 		// Decrypt the password file
 		passwordPath := filepath.Join(vaultPath, site, "password")
 		file, _ := util.ReadBytesFromFile(passwordPath)
