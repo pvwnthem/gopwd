@@ -70,7 +70,7 @@ var showCmd = &cobra.Command{
 		// If the line flag is set, print or copy only the provided line number
 		lineNumber, _ := cmd.Flags().GetInt("line")
 		lines := strings.Split(string(decrypted), "\n")
-		if lineNumber > 0 && lineNumber <= len(lines) {
+		if lineNumber > 0 {
 			line := lines[lineNumber-1]
 			if line == "" {
 				return fmt.Errorf("line %d is empty", lineNumber)
