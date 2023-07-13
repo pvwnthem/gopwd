@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/atotto/clipboard"
 	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
@@ -54,12 +55,24 @@ var showCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrPasswordDecryption, err)
 		}
 
-		fmt.Printf("%s", decrypted)
+		// If the clipboard flag is set, copy the password to the clipboard
+		clipboardFlag, _ := cmd.Flags().GetBool("clipboard")
+		if clipboardFlag {
+			err = clipboard.WriteAll(string(decrypted))
+			if err != nil {
+				return fmt.Errorf("failed to copy password to clipboard: %w", err)
+			}
+			fmt.Printf("Copied password for %s to clipboard", site)
+			return nil
+		} else {
+			fmt.Printf("%s", decrypted)
+		}
 
 		return nil
 	},
 }
 
 func init() {
+	showCmd.Flags().BoolP("clipboard", "c", false, "copy the password to the clipboard and dont print it to stdout")
 	rootCmd.AddCommand(showCmd)
 }

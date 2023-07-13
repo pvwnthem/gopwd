@@ -3,6 +3,7 @@ module github.com/pvwnthem/gopwd
 go 1.20
 
 require (
+	github.com/atotto/clipboard v0.1.4
 	github.com/spf13/cobra v1.7.0
 	golang.org/x/term v0.10.0
 )
