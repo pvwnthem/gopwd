@@ -1,28 +1,24 @@
-# gopwd - A Terminal-Based Password Manager in Golang
-
 ## Introduction
-gopwd is a command-line password manager written in Golang. It provides a secure and convenient way to store and manage your passwords.
+gopwd is a (currently linux only :sob:) command-line password manager written in Golang. It provides a secure, convenient, and portable way to store and manage your passwords.
 
 ## Installation Guide
 
-To install and use `gopwd`, follow the steps below:
+To install and use `gopwd` on Linux, follow the steps below:
 
 ### Step 1: Download the Binary
 
 1. Go to the [GitHub releases page](https://github.com/pvwnthem/gopwd/releases) for `gopwd`.
 2. Locate the release version you want to install. For example, v1.0.2.
-3. Download the binary file suitable for your operating system. Choose the appropriate file based on your system architecture (e.g., 32-bit or 64-bit) and operating system (Linux, macOS, or Windows).
+3. Download the binary file suitable for Linux. Choose the appropriate file based on your system architecture (e.g., 32-bit or 64-bit).
 
 ### Step 2: Extract the Binary (if necessary)
-if you used a system package like a .deb or .rpm this is not necessary, the package manager will take care of this for you.
-If you downloaded a compressed archive file (e.g., `.tar.gz` or `.zip`), extract its contents to a directory of your choice.
+If you used a system package like a `.deb` or `.rpm`, this step is not necessary. The package manager will take care of this for you. If you downloaded a compressed archive file (e.g., `.tar.gz`), extract its contents to a directory of your choice.
 
 ### Step 3: Add the Binary to Your System's Path
 
-if you used a system package like a .deb or .rpm this is not necessary, the package manager will take care of this for you.
-To use `gopwd` from anywhere on your system, you need to add the binary file to your system's executable path.
+If you used a system package like a `.deb` or `.rpm`, this step is not necessary. The package manager will take care of this for you. To use `gopwd` from anywhere on your system, you need to add the binary file to your system's executable path.
 
-**Linux and macOS:**
+**Linux:**
 
 1. Open a terminal.
 2. Navigate to the directory where you extracted the binary file.
@@ -34,30 +30,17 @@ To use `gopwd` from anywhere on your system, you need to add the binary file to 
 
    Enter your password when prompted.
 
-**Windows:**
-
-1. Open File Explorer and navigate to the directory where you extracted the binary file.
-2. Right-click on the `gopwd.exe` file and select "Cut" from the context menu.
-3. Press `Win + X` and select "System" from the menu.
-4. In the System window, click on "Advanced system settings" on the left.
-5. Click on the "Environment Variables" button.
-6. In the "System variables" section, scroll down and select the "Path" variable.
-7. Click on the "Edit" button.
-8. In the "Edit Environment Variable" window, click on the "New" button.
-9. Paste the path to the directory where you extracted the `gopwd.exe` file.
-10. Click "OK" on all windows to save the changes.
-
 ### Step 4: Verify the Installation
 
-To verify that `gopwd` is installed correctly, open a new terminal or command prompt and run the following command:
+To verify that `gopwd` is installed correctly, open a new terminal and run the following command:
 
 ```bash
 gopwd help
 ```
 
-If the installation was successful, you should see commands `gopwd` printed on the screen.
+If the installation was successful, you should see `gopwd` commands printed on the screen.
 
-Congratulations! You have successfully installed `gopwd` on your system. You can now start using it to manage your passwords.
+Congratulations! You have successfully installed `gopwd` on your Linux system. You can now start using it to manage your passwords.
 
 ## Initializing a Vault
 To initialize a vault, use the following command:
