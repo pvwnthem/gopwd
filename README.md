@@ -165,6 +165,14 @@ To edit a password or add metadata such as an email or username, use the followi
 gopwd edit <service>
 ```
 
+## Copy a Password to Another Service
+
+To copy a password from one service to another, use the following command:
+
+```
+gopwd cp <service> <new service>
+```
+
 ### Removing a Vault
 
 To remove a vault, use the following command:
@@ -172,9 +180,3 @@ To remove a vault, use the following command:
 ```
 gopwd vault rm [-p <path>] [-n <name>]
 ```
-
-- `<service>`: Specify the service for which you want to edit the password.
-
-This command opens a Nano text editor window, allowing you to modify the password or add any desired metadata.
-
-Feel free to reach out if you have any further questions!
