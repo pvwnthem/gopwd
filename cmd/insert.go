@@ -36,6 +36,11 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrPasswordDoesExist)
 		}
 
+		password, err := util.GetPassword()
+		if err != nil {
+			return fmt.Errorf("failed to get password: %w", err)
+		}
+
 		// Create the directory
 		dirPath := filepath.Join(vaultPath, site)
 		err = util.CreateDirectory(dirPath)
@@ -48,12 +53,6 @@ var insertCmd = &cobra.Command{
 		err = util.CreateFile(passwordPath)
 		if err != nil {
 			return fmt.Errorf("failed to create password file: %w", err)
-		}
-
-		// Ask the user for the password and confirm it before writing it to the file
-		password, err := util.GetPassword()
-		if err != nil {
-			return fmt.Errorf("failed to get password: %w", err)
 		}
 
 		GPGID, err := util.GetGPGID(vaultPath)
