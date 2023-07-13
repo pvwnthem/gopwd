@@ -47,7 +47,7 @@ var showCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := util.NewGPGModule(GPGID, util.GetGPGPath())
+		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
 
 		decrypted, err := GPGModule.Decrypt(file)
 		if err != nil {

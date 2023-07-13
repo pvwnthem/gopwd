@@ -43,7 +43,7 @@ var editCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := util.NewGPGModule(GPGID, util.GetGPGPath())
+		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
 		// Decrypt the password file
 		passwordPath := filepath.Join(vaultPath, site, "password")
 		file, _ := util.ReadBytesFromFile(passwordPath)
@@ -55,8 +55,8 @@ var editCmd = &cobra.Command{
 		// Create a temporary file with the decrypted content
 		tmpfile := util.CreateTempFileFromBytes(decryptedContent)
 
-		// Open the temporary file using Nano
-		cmde := exec.Command(util.GetTextEditor(), tmpfile.Name())
+		// Open the temporary file using $EDITOR
+		cmde := exec.Command(os.Getenv("$EDITOR"), tmpfile.Name())
 		cmde.Stdin = os.Stdin
 		cmde.Stdout = os.Stdout
 		cmde.Stderr = os.Stderr

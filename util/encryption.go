@@ -7,7 +7,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 )
 
@@ -107,11 +106,4 @@ func GeneratePassword(length string) string {
 	}
 
 	return string(password)
-}
-
-func GetGPGPath() string {
-	if runtime.GOOS == "windows" {
-		return "C:\\Program Files (x86)\\GnuPG\\bin\\gpg.exe"
-	}
-	return "/usr/bin/gpg"
 }

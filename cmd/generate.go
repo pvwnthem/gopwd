@@ -52,7 +52,7 @@ var generateCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := util.NewGPGModule(GPGID, util.GetGPGPath())
+		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
 
 		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
 		if err != nil {
