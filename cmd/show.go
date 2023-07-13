@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/atotto/clipboard"
 	"github.com/pvwnthem/gopwd/constants"
@@ -64,15 +65,36 @@ var showCmd = &cobra.Command{
 			}
 			fmt.Printf("Copied password for %s to clipboard", site)
 			return nil
-		} else {
-			fmt.Printf("%s", decrypted)
 		}
+
+		// If the line flag is set, print or copy only the provided line number
+		lineNumber, _ := cmd.Flags().GetInt("line")
+		lines := strings.Split(string(decrypted), "\n")
+		if lineNumber > 0 && lineNumber <= len(lines) {
+			line := lines[lineNumber-1]
+			if line == "" {
+				return fmt.Errorf("line %d is empty", lineNumber)
+			}
+			if clipboardFlag {
+				err = clipboard.WriteAll(line)
+				if err != nil {
+					return fmt.Errorf("failed to copy line to clipboard: %w", err)
+				}
+				fmt.Printf("Copied line %d for %s to clipboard", lineNumber, site)
+			} else {
+				fmt.Printf("%s", string(line))
+			}
+			return nil
+		}
+
+		fmt.Printf("%s", decrypted)
 
 		return nil
 	},
 }
 
 func init() {
-	showCmd.Flags().BoolP("copy", "c", false, "copy the password to the clipboard and dont print it to stdout")
+	showCmd.Flags().BoolP("copy", "c", false, "copy the password to the clipboard and don't print it to stdout")
+	showCmd.Flags().IntP("line", "l", 0, "print or copy only the provided line number")
 	rootCmd.AddCommand(showCmd)
 }

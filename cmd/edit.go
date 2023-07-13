@@ -56,7 +56,8 @@ var editCmd = &cobra.Command{
 		tmpfile := util.CreateTempFileFromBytes(decryptedContent)
 
 		// Open the temporary file using $EDITOR
-		cmde := exec.Command(os.Getenv("$EDITOR"), tmpfile.Name())
+		editorEnv := os.Getenv("EDITOR")
+		cmde := exec.Command(editorEnv, tmpfile.Name())
 		cmde.Stdin = os.Stdin
 		cmde.Stdout = os.Stdout
 		cmde.Stderr = os.Stderr
