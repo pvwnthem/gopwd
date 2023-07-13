@@ -52,11 +52,13 @@ var insertCmd = &cobra.Command{
 		passwordPath := filepath.Join(dirPath, "password")
 		err = util.CreateFile(passwordPath)
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf("failed to create password file: %w", err)
 		}
 
 		GPGID, err := util.GetGPGID(vaultPath)
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
@@ -64,11 +66,13 @@ var insertCmd = &cobra.Command{
 
 		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf(constants.ErrPasswordEncryption, err)
 		}
 
 		err = util.WriteBytesToFile(passwordPath, encryptedPassword)
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf(constants.ErrPasswordWrite, err)
 		}
 

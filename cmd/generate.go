@@ -49,6 +49,7 @@ var generateCmd = &cobra.Command{
 
 		GPGID, err := util.GetGPGID(vaultPath)
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
@@ -56,6 +57,7 @@ var generateCmd = &cobra.Command{
 
 		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf(constants.ErrPasswordEncryption, err)
 		}
 
@@ -63,6 +65,7 @@ var generateCmd = &cobra.Command{
 		passwordPath := filepath.Join(dirPath, "password")
 		err = util.WriteBytesToFile(passwordPath, encryptedPassword)
 		if err != nil {
+			util.RemoveDirectory(dirPath)
 			return fmt.Errorf(constants.ErrPasswordWrite, err)
 		}
 
