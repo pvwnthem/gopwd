@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -34,7 +35,29 @@ func CreateDirectory(path string) error {
 	}
 	return nil
 }
+func CopyFile(src, dst string) error {
+	// Open the source file
+	srcFile, err := os.Open(src)
+	if err != nil {
+		return fmt.Errorf("failed to open source file: %v", err)
+	}
+	defer srcFile.Close()
 
+	// Create the destination file
+	dstFile, err := os.Create(dst)
+	if err != nil {
+		return fmt.Errorf("failed to create destination file: %v", err)
+	}
+	defer dstFile.Close()
+
+	// Copy the contents
+	_, err = io.Copy(dstFile, srcFile)
+	if err != nil {
+		return fmt.Errorf("failed to copy file contents: %v", err)
+	}
+
+	return nil
+}
 func RemoveDirectory(path string) error {
 	err := os.RemoveAll(path)
 	if err != nil {
