@@ -56,7 +56,7 @@ var showCmd = &cobra.Command{
 		}
 
 		// If the clipboard flag is set, copy the password to the clipboard
-		clipboardFlag, _ := cmd.Flags().GetBool("clipboard")
+		clipboardFlag, _ := cmd.Flags().GetBool("copy")
 		if clipboardFlag {
 			err = clipboard.WriteAll(string(decrypted))
 			if err != nil {
@@ -73,6 +73,6 @@ var showCmd = &cobra.Command{
 }
 
 func init() {
-	showCmd.Flags().BoolP("clipboard", "c", false, "copy the password to the clipboard and dont print it to stdout")
+	showCmd.Flags().BoolP("copy", "c", false, "copy the password to the clipboard and dont print it to stdout")
 	rootCmd.AddCommand(showCmd)
 }

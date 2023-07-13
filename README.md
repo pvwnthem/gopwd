@@ -94,7 +94,7 @@ You can change the config settings anytime using the above commands.
 To insert a password into your vault for a specific service, use the following command:
 
 ```
-gopwd insert <service>
+gopwd insert <service> 
 ```
 
 - `<service>`: Specify the service for which the password is used. The service name can be anything, including a website, username, or any other identifier. **Important:** The service name cannot contain spaces. Use a dash (-) instead. Special characters other than a dash or underscore are also not allowed.
@@ -146,6 +146,7 @@ gopwd show <service>
 ```
 
 - `<service>`: Specify the service for which you want to view the password.
+- `-c`, `--copy` (optional): Copy the password to your clipboard and don't show it on stdout. 
 
 ### Removing a Password
 
