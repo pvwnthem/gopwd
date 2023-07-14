@@ -8,6 +8,7 @@ import (
 
 	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/crypt"
+	"github.com/pvwnthem/gopwd/env"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -57,7 +58,7 @@ var editCmd = &cobra.Command{
 		tmpfile := util.CreateTempFileFromBytes(decryptedContent)
 
 		// Open the temporary file using $EDITOR
-		editorEnv := os.Getenv("EDITOR")
+		editorEnv := env.EDITOR()
 		cmde := exec.Command(editorEnv, tmpfile.Name())
 		cmde.Stdin = os.Stdin
 		cmde.Stdout = os.Stdout
