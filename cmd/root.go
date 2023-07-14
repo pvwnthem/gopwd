@@ -15,14 +15,16 @@ import (
 var configFile string
 
 var (
-	Path string
-	Name string
+	Path    string
+	Name    string
+	Version string
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gopwd",
-	Short: "A cli password manager written in go",
-	Long:  "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
+	Use:     "gopwd",
+	Short:   "A cli password manager written in go",
+	Long:    "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
+	Version: Version,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the vault exists
@@ -47,6 +49,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	rootCmd.Version = Version
 	err := rootCmd.Execute()
 
 	if err != nil {
