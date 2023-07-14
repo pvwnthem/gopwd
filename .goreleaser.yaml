@@ -11,7 +11,8 @@ builds:
       - CGO_ENABLED=0
     goos:
       - linux
-
+      - windows
+      - darwin
 
 archives:
   - format: tar.gz
@@ -23,6 +24,10 @@ archives:
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+    - goos: windows
+      format: zip
 checksum:
   name_template: 'checksums.txt'
 snapshot:

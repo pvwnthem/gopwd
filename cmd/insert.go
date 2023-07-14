@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/pvwnthem/gopwd/constants"
+	"github.com/pvwnthem/gopwd/crypt"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -62,7 +63,7 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
+		GPGModule := crypt.New(GPGID, crypt.Config{})
 
 		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
 		if err != nil {

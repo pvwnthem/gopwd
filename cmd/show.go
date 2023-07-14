@@ -7,6 +7,7 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/pvwnthem/gopwd/constants"
+	"github.com/pvwnthem/gopwd/crypt"
 	"github.com/pvwnthem/gopwd/util"
 	"github.com/spf13/cobra"
 )
@@ -49,7 +50,7 @@ var showCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := util.NewGPGModule(GPGID, "/usr/bin/gpg")
+		GPGModule := crypt.New(GPGID, crypt.Config{})
 
 		decrypted, err := GPGModule.Decrypt(file)
 		if err != nil {
