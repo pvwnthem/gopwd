@@ -3,10 +3,10 @@ package util
 import (
 	"crypto/rand"
 	"fmt"
-	"math/big"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -90,20 +90,27 @@ func GetGPGID(path string) (string, error) {
 	return strings.TrimSpace(string(gpgIDBytes)), nil
 }
 
-func GeneratePassword(length string) string {
+func GeneratePassword(length string) (string, error) {
 	characters := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=_+[]{};':\",./<>?"
 
 	// Convert the length string to an integer
-	n, _ := new(big.Int).SetString(length, 10)
-	passwordLength := int(n.Int64())
-
-	// Generate the password
-	var password []byte
-	for i := 0; i < passwordLength; i++ {
-		randomIndex, _ := rand.Int(rand.Reader, big.NewInt(int64(len(characters))))
-		character := characters[randomIndex.Int64()]
-		password = append(password, byte(character))
+	n, err := strconv.Atoi(length)
+	if err != nil {
+		return "", fmt.Errorf("invalid length: %w", err)
 	}
 
-	return string(password)
+	// Generate the password
+	var password strings.Builder
+	for i := 0; i < n; i++ {
+		randomBytes := make([]byte, 1)
+		_, err := rand.Read(randomBytes)
+		if err != nil {
+			return "", fmt.Errorf("failed to generate random bytes: %w", err)
+		}
+		randomIndex := int(randomBytes[0]) % len(characters)
+		character := characters[randomIndex]
+		password.WriteByte(character)
+	}
+
+	return password.String(), nil
 }

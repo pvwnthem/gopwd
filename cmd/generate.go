@@ -45,7 +45,11 @@ var generateCmd = &cobra.Command{
 		}
 
 		// Generate the password
-		password := util.GeneratePassword(length)
+		password, err := util.GeneratePassword(length)
+		if err != nil {
+			util.RemoveDirectory(dirPath)
+			return fmt.Errorf("failed to generate password %w", err)
+		}
 
 		GPGID, err := util.GetGPGID(vaultPath)
 		if err != nil {
