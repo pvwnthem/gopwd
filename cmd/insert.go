@@ -29,7 +29,7 @@ var insertCmd = &cobra.Command{
 		}
 
 		// Check if the password already exists
-		passwordExists, err := util.Exists(filepath.Join(vaultPath, site))
+		passwordExists, err := util.Exists(filepath.Join(vaultPath, site, "password"))
 		if err != nil {
 			return fmt.Errorf(constants.ErrPasswordExistence, err)
 		}
