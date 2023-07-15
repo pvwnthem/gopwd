@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/pvwnthem/gopwd/constants"
-	"github.com/pvwnthem/gopwd/env"
 	crypt "github.com/pvwnthem/gopwd/pkg/crypto"
+	"github.com/pvwnthem/gopwd/pkg/env"
 	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
 )
