@@ -175,6 +175,7 @@ gopwd rm <service>
 ```
 
 - `<service>`: Specify the service for which you want to remove the password.
+- `-r`, `--recursive` (optional): Remove the password and all its subfolders.
 
 ### Editing a Password
 

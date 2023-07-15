@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	Recursive bool
+)
+
 var rmCmd = &cobra.Command{
 	Use:   "rm [site]",
 	Short: "Removes a password from the vault",
@@ -28,7 +32,7 @@ var rmCmd = &cobra.Command{
 		}
 
 		// Check if the password exists
-		passwordPath := filepath.Join(vaultPath, site)
+		passwordPath := filepath.Join(vaultPath, site, "password")
 		passwordExists, err := util.Exists(passwordPath)
 		if err != nil {
 			return fmt.Errorf(constants.ErrPasswordExistence, err)
@@ -44,9 +48,29 @@ var rmCmd = &cobra.Command{
 
 		// Remove the password directory
 		if action {
-			err = util.RemoveDirectory(passwordPath)
+
+			nestedDirs, err := util.GetNestedDirectories(passwordPath)
 			if err != nil {
-				return fmt.Errorf("failed to remove password directory: %w", err)
+				return fmt.Errorf("failed to get nested directories: %w", err)
+			}
+
+			if Recursive {
+				err = util.RemoveDirectory(passwordPath)
+				if err != nil {
+					return fmt.Errorf("failed to remove password directory: %w", err)
+				}
+			} else {
+				if len(nestedDirs) > 0 {
+					err = util.RemoveFile(filepath.Join(passwordPath, "password"))
+					if err != nil {
+						return fmt.Errorf("failed to remove password file: %w", err)
+					}
+				} else {
+					err = util.RemoveDirectory(passwordPath)
+					if err != nil {
+						return fmt.Errorf("failed to remove password directory: %w", err)
+					}
+				}
 			}
 		}
 		fmt.Printf("Removed password for %s", site)
@@ -56,5 +80,8 @@ var rmCmd = &cobra.Command{
 }
 
 func init() {
+
+	rmCmd.Flags().BoolVarP(&Recursive, "recursive", "r", false, "remove the password directory and all items inside of it")
+
 	rootCmd.AddCommand(rmCmd)
 }

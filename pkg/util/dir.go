@@ -67,6 +67,14 @@ func RemoveDirectory(path string) error {
 	return nil
 }
 
+func RemoveFile(path string) error {
+	err := os.Remove(path)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func CreateTempFileFromBytes(content []byte) *os.File {
 	tmpfile, _ := os.CreateTemp("", "tempfile")
 	tmpfile.Write(content)
@@ -173,4 +181,27 @@ func GetGPGID(path string) (string, error) {
 	}
 
 	return strings.TrimSpace(string(gpgIDBytes)), nil
+}
+
+func GetNestedDirectories(dirPath string) ([]string, error) {
+	var nestedDirs []string
+
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if path != dirPath && info.IsDir() {
+			nestedDirs = append(nestedDirs, path)
+			return filepath.SkipDir
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nestedDirs, nil
 }
