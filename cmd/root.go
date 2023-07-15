@@ -8,7 +8,7 @@ import (
 	"github.com/pvwnthem/gopwd/cmd/config"
 	"github.com/pvwnthem/gopwd/cmd/vault"
 	"github.com/pvwnthem/gopwd/constants"
-	"github.com/pvwnthem/gopwd/util"
+	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
 )
 

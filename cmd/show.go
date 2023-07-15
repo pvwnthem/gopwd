@@ -7,8 +7,8 @@ import (
 
 	"github.com/atotto/clipboard"
 	"github.com/pvwnthem/gopwd/constants"
-	"github.com/pvwnthem/gopwd/crypt"
-	"github.com/pvwnthem/gopwd/util"
+	crypt "github.com/pvwnthem/gopwd/pkg/crypto"
+	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
 )
 

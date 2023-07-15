@@ -3,7 +3,7 @@ package vault
 import (
 	"os"
 
-	"github.com/pvwnthem/gopwd/util"
+	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
 )
 
