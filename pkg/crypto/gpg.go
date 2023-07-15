@@ -1,4 +1,4 @@
-package crypt
+package crypto
 
 var (
 	defaultArgs = []string{"--quiet", "--yes", "--compress-algo=none", "--no-encrypt-to", "--no-auto-check-trustdb"}

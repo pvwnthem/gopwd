@@ -126,6 +126,8 @@ gopwd generate <service> <length>
 
 - `<service>`: Specify the service for which the password is used.
 - `<length>`: Specify the length of the generated password.
+- `-m`, `--memorable` (optional): Generate a more memorable password which includes full words.
+- `--no-symbols` (optional): Generate a password without symbols.
 
 Example service names and their representation in the vault:
 

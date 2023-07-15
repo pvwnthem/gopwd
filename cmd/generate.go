@@ -3,11 +3,18 @@ package cmd
 import (
 	"fmt"
 	"path/filepath"
+	"strconv"
 
 	"github.com/pvwnthem/gopwd/constants"
-	crypt "github.com/pvwnthem/gopwd/pkg/crypto"
+	"github.com/pvwnthem/gopwd/pkg/crypto"
+	"github.com/pvwnthem/gopwd/pkg/pwdgen"
 	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
+)
+
+var (
+	Memorable bool
+	Symbols   bool
 )
 
 var generateCmd = &cobra.Command{
@@ -46,7 +53,18 @@ var generateCmd = &cobra.Command{
 		}
 
 		// Generate the password
-		password, err := util.GeneratePassword(length)
+		len, err := strconv.Atoi(length)
+		if err != nil {
+			util.RemoveDirectory(dirPath)
+			return fmt.Errorf("failed to convert length to int: %w", err)
+		}
+		generator := pwdgen.NewGenerator(len, pwdgen.CharAll)
+		var password string
+		if Memorable {
+			password, err = generator.GenerateMemorable(true, !Symbols)
+		} else {
+			password, err = generator.Generate()
+		}
 		if err != nil {
 			util.RemoveDirectory(dirPath)
 			return fmt.Errorf("failed to generate password %w", err)
@@ -58,7 +76,7 @@ var generateCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := crypt.New(GPGID, crypt.Config{})
+		GPGModule := crypto.New(GPGID, crypto.Config{})
 
 		encryptedPassword, err := GPGModule.Encrypt([]byte(password))
 		if err != nil {
@@ -82,5 +100,7 @@ var generateCmd = &cobra.Command{
 }
 
 func init() {
+	generateCmd.Flags().BoolVarP(&Memorable, "memorable", "m", false, "Generate a memorable password")
+	generateCmd.Flags().BoolVar(&Symbols, "no-symbols", false, "Generate a password with no symbols")
 	rootCmd.AddCommand(generateCmd)
 }

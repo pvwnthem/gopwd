@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/pvwnthem/gopwd/constants"
-	crypt "github.com/pvwnthem/gopwd/pkg/crypto"
+	"github.com/pvwnthem/gopwd/pkg/crypto"
 	"github.com/pvwnthem/gopwd/pkg/env"
 	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
@@ -45,7 +45,7 @@ var editCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrGetGPGID, err)
 		}
 
-		GPGModule := crypt.New(GPGID, crypt.Config{})
+		GPGModule := crypto.New(GPGID, crypto.Config{})
 		// Decrypt the password file
 		passwordPath := filepath.Join(vaultPath, site, "password")
 		file, _ := util.ReadBytesFromFile(passwordPath)
