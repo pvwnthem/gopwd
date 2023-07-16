@@ -14,6 +14,7 @@ var removeCmd = &cobra.Command{
 	Long:  "",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
+		Path, configFile, _ = util.InitConfig(Path, configFile)
 		vaultPath := Path
 
 		// Check if the vault exists

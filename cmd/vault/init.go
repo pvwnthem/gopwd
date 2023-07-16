@@ -16,6 +16,7 @@ var initCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 
 	RunE: func(cmd *cobra.Command, args []string) error {
+		Path, configFile, _ = util.InitConfig(Path, configFile)
 		vaultPath := Path
 
 		// Check if the vault already exists
