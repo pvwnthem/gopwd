@@ -6,7 +6,7 @@ func GetVersion() semver.Version {
 	version := semver.Version{
 		Major: 1,
 		Minor: 1,
-		Patch: 4,
+		Patch: 6,
 		Pre: []semver.PRVersion{
 			{VersionStr: "git"},
 		},
