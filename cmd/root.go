@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/pvwnthem/gopwd/cmd/config"
 	"github.com/pvwnthem/gopwd/cmd/vault"
@@ -16,7 +17,6 @@ var configFile string
 
 var (
 	Path    string
-	Name    string
 	Version string
 )
 
@@ -28,17 +28,25 @@ var rootCmd = &cobra.Command{
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the vault exists
-		vaultPath := filepath.Join(Path, Name)
-		vaultExists, err := util.Exists(vaultPath)
+		vaultPath := Path
+		pathExists, err := util.Exists(vaultPath)
 		if err != nil {
 			return fmt.Errorf(constants.ErrVaultExistence, err)
 		}
-		if !vaultExists {
+		if !pathExists {
 			return fmt.Errorf(constants.ErrVaultDoesNotExist, vaultPath)
 		}
 
-		fmt.Println(Name) // print name of vault on top of dir structure
-		err = util.PrintDirectoryTree(filepath.Join(Path, Name), "")
+		isVault, err := util.Exists(filepath.Join(vaultPath, ".vault"))
+		if err != nil {
+			return fmt.Errorf("failed to check if the provided path is a vault %w", err)
+		}
+		if !isVault {
+			return fmt.Errorf("provided path is not a vault, does it have a .vault file?")
+		}
+
+		fmt.Println(strings.Split(Path, "/")[len(strings.Split(Path, "/"))-1]) // print name of vault on top of dir structure
+		err = util.PrintDirectoryTree(Path, "")
 		if err != nil {
 			return fmt.Errorf("error printing directory tree: %w", err)
 		}
@@ -49,7 +57,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
-	Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile)
+	Path, configFile, _ = util.InitConfig(Path, configFile)
 
 	rootCmd.Version = Version
 	err := rootCmd.Execute()
@@ -67,7 +75,6 @@ func addSubcommandPalettes() {
 func init() {
 	addSubcommandPalettes()
 	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path of the vault")
-	rootCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "Config file (default is $HOME/.gopwd/config.json)")
 
 }

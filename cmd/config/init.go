@@ -46,15 +46,10 @@ var initCmd = &cobra.Command{
 		// Create the config object
 		config := util.Config{
 			Path: Path,
-			Name: Name,
 		}
 
 		if Path == "" {
 			config.Path = util.DefaultPath
-		}
-
-		if Name == "" {
-			config.Name = util.DefaultName
 		}
 
 		// Marshal the config object to JSON

@@ -18,7 +18,7 @@ var copyCmd = &cobra.Command{
 		site := args[0]
 		destination := args[1]
 
-		vaultPath := filepath.Join(Path, Name)
+		vaultPath := Path
 		// Check if the vault exists
 		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {

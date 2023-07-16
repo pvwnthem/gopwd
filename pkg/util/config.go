@@ -9,14 +9,12 @@ import (
 )
 
 var (
-	DefaultPath = filepath.Join(GetHomeDir(), ".gopwd")
-	DefaultName = "vault"
+	DefaultPath = filepath.Join(GetHomeDir(), ".gopwd", "vault")
 )
 
 // Config holds the configuration data
 type Config struct {
 	Path string `json:"path"`
-	Name string `json:"name"`
 }
 
 func LoadConfig(configFile string) (*Config, error) {
@@ -40,7 +38,7 @@ func LoadConfig(configFile string) (*Config, error) {
 	return &config, nil
 }
 
-func InitConfig(Path string, Name string, configFile string) (string, string, string, error) {
+func InitConfig(Path string, configFile string) (string, string, error) {
 	// Use default configuration file path
 	if configFile == "" {
 		configFile = filepath.Join(GetHomeDir(), ".gopwd", "config.json")
@@ -51,8 +49,7 @@ func InitConfig(Path string, Name string, configFile string) (string, string, st
 	if err != nil {
 		// If the config file doesn't exist, use default values
 		Path = DefaultPath
-		Name = DefaultName
-		return Path, Name, configFile, nil
+		return Path, configFile, nil
 	}
 
 	// Load configuration from file
@@ -60,17 +57,14 @@ func InitConfig(Path string, Name string, configFile string) (string, string, st
 	if err != nil {
 		fmt.Println("Failed to load config file:", err)
 		os.Exit(1)
-		return "", "", "", err
+		return "", "", err
 	}
 
 	// Override flags with configuration values
 	if Path == "" {
 		Path = cfg.Path
 	}
-	if Name == "" {
-		Name = cfg.Name
-	}
 
-	return Path, Name, configFile, nil
+	return Path, configFile, nil
 
 }

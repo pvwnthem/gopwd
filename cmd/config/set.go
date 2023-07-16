@@ -20,8 +20,8 @@ var setCmd = &cobra.Command{
 		field := args[0]
 		value := args[1]
 
-		if field != "path" && field != "name" {
-			return errors.New("invalid field name, should be either 'path' or 'name'")
+		if field != "path" {
+			return errors.New("invalid field name, should be 'path'")
 		}
 
 		configPath := filepath.Join(util.GetHomeDir(), ".gopwd", "config.json")
@@ -50,8 +50,6 @@ var setCmd = &cobra.Command{
 		switch field {
 		case "path":
 			config.Path = value
-		case "name":
-			config.Name = value
 		}
 
 		// Marshal the modified config object to JSON

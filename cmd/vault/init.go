@@ -16,7 +16,7 @@ var initCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		vaultPath := filepath.Join(Path, Name)
+		vaultPath := Path
 
 		// Check if the vault already exists
 		vaultExists, err := util.Exists(vaultPath)
@@ -40,6 +40,11 @@ var initCmd = &cobra.Command{
 		err = util.WriteToFile(filepath.Join(vaultPath, ".gpg-id"), args[0])
 		if err != nil {
 			return fmt.Errorf("failed to write to gpg-id file: %w", err)
+		}
+
+		err = util.CreateFile(filepath.Join(vaultPath, ".vault"))
+		if err != nil {
+			return fmt.Errorf("failed to create .vault file")
 		}
 
 		fmt.Printf("Successfully created vault at %s", vaultPath)

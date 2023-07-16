@@ -19,7 +19,7 @@ var showCmd = &cobra.Command{
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		site := args[0]
-		vaultPath := filepath.Join(Path, Name)
+		vaultPath := Path
 		// Check if the vault exists
 		vaultExists, err := util.Exists(vaultPath)
 		if err != nil {

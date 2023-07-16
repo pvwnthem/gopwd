@@ -2,7 +2,6 @@ package vault
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/pkg/util"
@@ -15,7 +14,7 @@ var removeCmd = &cobra.Command{
 	Long:  "",
 
 	RunE: func(cmd *cobra.Command, args []string) error {
-		vaultPath := filepath.Join(Path, Name)
+		vaultPath := Path
 
 		// Check if the vault exists
 		vaultExists, err := util.Exists(vaultPath)
@@ -45,6 +44,5 @@ var removeCmd = &cobra.Command{
 }
 
 func init() {
-	VaultCmd.MarkPersistentFlagRequired("name")
 	VaultCmd.AddCommand(removeCmd)
 }

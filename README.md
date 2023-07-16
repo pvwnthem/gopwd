@@ -61,29 +61,28 @@ Congratulations! You have successfully installed `gopwd` on your system. You can
 To initialize a vault, use the following command:
 
 ```
-gopwd vault init [-p <path>] [-n <name>]
+gopwd vault init [-p <path>]
 ```
 
-- `-p` (optional): Specify the path to the vault (default: `$HOME/.gopwd`).
-- `-n` (optional): Specify the name of the vault (default: "vault").
+- `-p` (optional): Specify the path to the vault (default: `$HOME/.gopwd/vault`).
 
 **Example:**
 
 ```
-gopwd vault init -p /home/'your username'/vaults -n main
+gopwd vault init -p /home/'your username'/vault
 ```
 
-This command initializes a vault at `/home/'your username'/vaults/main`.
+This command initializes a vault at `/home/'your username'/vault`.
 
 ### Additional Information on Initializing a Vault
-If you use the default options, all other commands can be executed without specifying flags or a config file. They will automatically use the default vault location. However, if you have used a custom location, it is recommended to set up the path and name of your vault in a config file. Without a config file, you will need to specify the path and name flags for every command you run (`-p [path]` and `-n [name]`).
+If you use the default options, all other commands can be executed without specifying flags or a config file. They will automatically use the default vault location. However, if you have used a custom location, it is recommended to set up the path of your vault in a config file. Without a config file, you will need to specify the path flag for every command you run (`-p [path]`).
 
 To set up a config file, you have two options:
 
 1. Run the following command:
 
    ```
-   gopwd config init -p "path to the directory where your vault is (not the full path)" -n "name of your vault (name of the actual vault folder)"
+   gopwd config init -p "path to your vault folder"
    ```
 
 2. Run the following command to initialize the config file:
@@ -98,7 +97,7 @@ To set up a config file, you have two options:
    gopwd config set <field> <value>
    ```
 
-   The `<field>` can be either "path" or "name".
+   The `<field>` can be either "path" or `coming soon (this is not an option)`
 
 You can change the config settings anytime using the above commands.
 
@@ -198,5 +197,5 @@ gopwd cp <service> <new service>
 To remove a vault, use the following command:
 
 ```
-gopwd vault rm [-p <path>] [-n <name>]
+gopwd vault rm [-p <path>]
 ```
