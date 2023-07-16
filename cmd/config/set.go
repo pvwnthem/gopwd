@@ -30,8 +30,8 @@ var setCmd = &cobra.Command{
 		if err != nil {
 			return fmt.Errorf(constants.ErrConfigExistence, err)
 		}
-		if configExists {
-			return errors.New(constants.ErrConfigDoesExist)
+		if !configExists {
+			return errors.New(constants.ErrConfigDoesNotExist)
 		}
 		// Read the config file
 		configJSON, err := os.ReadFile(configPath)

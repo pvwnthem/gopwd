@@ -49,6 +49,8 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile)
+
 	rootCmd.Version = Version
 	err := rootCmd.Execute()
 
@@ -63,10 +65,9 @@ func addSubcommandPalettes() {
 }
 
 func init() {
-	cobra.OnInitialize(func() { Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile) })
-
 	addSubcommandPalettes()
 	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path of the vault")
 	rootCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "Config file (default is $HOME/.gopwd/config.json)")
+
 }

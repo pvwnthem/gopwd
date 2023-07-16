@@ -20,8 +20,16 @@ var initCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configPath := filepath.Join(util.GetHomeDir(), ".gopwd", "config.json")
 
+		gopwdDirExists, err := util.Exists(filepath.Join(util.GetHomeDir(), ".gopwd"))
+		if err != nil {
+			return fmt.Errorf("failed to check existence of .gopwd %w", err)
+		}
+		if !gopwdDirExists {
+			util.CreateDirectory(filepath.Join(util.GetHomeDir(), ".gopwd"))
+		}
+
 		// Check if the config file exists
-		configExists, err := util.Exists(filepath.Join(util.GetHomeDir(), ".gopwd", "config.json"))
+		configExists, err := util.Exists(configPath)
 		if err != nil {
 			return fmt.Errorf(constants.ErrConfigExistence, err)
 		}

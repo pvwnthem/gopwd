@@ -24,6 +24,8 @@ var VaultCmd = &cobra.Command{
 }
 
 func Execute() {
+	Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile)
+
 	err := VaultCmd.Execute()
 
 	if err != nil {
@@ -32,7 +34,6 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(func() { Path, Name, configFile, _ = util.InitConfig(Path, Name, configFile) })
 	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path to create the vault at")
 	VaultCmd.PersistentFlags().StringVarP(&Name, "name", "n", "", "The name of the vault")
 
