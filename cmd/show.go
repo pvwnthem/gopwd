@@ -12,6 +12,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	Line int
+	Copy bool
+)
+
 var showCmd = &cobra.Command{
 	Use:   "show [site]",
 	Short: "Shows a password from the vault",
@@ -58,8 +63,7 @@ var showCmd = &cobra.Command{
 		}
 
 		// If the clipboard flag is set, copy the password to the clipboard
-		clipboardFlag, _ := cmd.Flags().GetBool("copy")
-		if clipboardFlag {
+		if Copy {
 			err = clipboard.WriteAll(string(decrypted))
 			if err != nil {
 				return fmt.Errorf("failed to copy password to clipboard: %w", err)
@@ -69,19 +73,18 @@ var showCmd = &cobra.Command{
 		}
 
 		// If the line flag is set, print or copy only the provided line number
-		lineNumber, _ := cmd.Flags().GetInt("line")
 		lines := strings.Split(string(decrypted), "\n")
-		if lineNumber > 0 {
-			line := lines[lineNumber-1]
+		if Line > 0 {
+			line := lines[Line-1]
 			if line == "" {
-				return fmt.Errorf("line %d is empty", lineNumber)
+				return fmt.Errorf("line %d is empty", Line)
 			}
-			if clipboardFlag {
+			if Copy {
 				err = clipboard.WriteAll(line)
 				if err != nil {
 					return fmt.Errorf("failed to copy line to clipboard: %w", err)
 				}
-				fmt.Printf("Copied line %d for %s to clipboard", lineNumber, site)
+				fmt.Printf("Copied line %d for %s to clipboard", Line, site)
 			} else {
 				fmt.Printf("%s", string(line))
 			}
@@ -95,7 +98,7 @@ var showCmd = &cobra.Command{
 }
 
 func init() {
-	showCmd.Flags().BoolP("copy", "c", false, "copy the password to the clipboard and don't print it to stdout")
-	showCmd.Flags().IntP("line", "l", 0, "print or copy only the provided line number")
+	showCmd.Flags().BoolVarP(&Copy, "copy", "c", false, "copy the password to the clipboard and don't print it to stdout")
+	showCmd.Flags().IntVarP(&Line, "line", "l", 0, "print or copy only the provided line number")
 	rootCmd.AddCommand(showCmd)
 }
