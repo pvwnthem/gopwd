@@ -18,6 +18,7 @@ var configFile string
 var (
 	Path    string
 	Version string
+	Copy    bool
 )
 
 var rootCmd = &cobra.Command{
@@ -76,5 +77,5 @@ func init() {
 	addSubcommandPalettes()
 	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path of the vault")
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "Config file (default is $HOME/.gopwd/config.json)")
-
+	rootCmd.PersistentFlags().BoolVarP(&Copy, "copy", "c", false, "copy the password to the clipboard and don't print it to stdout")
 }

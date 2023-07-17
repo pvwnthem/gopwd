@@ -56,7 +56,7 @@ var copyCmd = &cobra.Command{
 			}
 		}
 
-		fmt.Printf("Copied password from %s to %s", site, destination)
+		fmt.Printf("Copied password from %s to %s \n", site, destination)
 		return nil
 	},
 }

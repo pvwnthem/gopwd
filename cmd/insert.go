@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/atotto/clipboard"
 	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/pkg/crypto"
 	"github.com/pvwnthem/gopwd/pkg/util"
@@ -77,7 +78,16 @@ var insertCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrPasswordWrite, err)
 		}
 
-		fmt.Printf("Inserted password for %s at %s", site, dirPath)
+		if Copy {
+			err = clipboard.WriteAll(password)
+			if err != nil {
+				return fmt.Errorf("failed to copy password to clipboard: %w", err)
+			}
+			fmt.Printf("Copied password for %s to clipboard", site)
+			return nil
+		}
+
+		fmt.Printf("Inserted password for %s at %s \n", site, dirPath)
 
 		return nil
 	},

@@ -14,7 +14,6 @@ import (
 
 var (
 	Line int
-	Copy bool
 )
 
 var showCmd = &cobra.Command{
@@ -98,7 +97,6 @@ var showCmd = &cobra.Command{
 }
 
 func init() {
-	showCmd.Flags().BoolVarP(&Copy, "copy", "c", false, "copy the password to the clipboard and don't print it to stdout")
 	showCmd.Flags().IntVarP(&Line, "line", "l", 0, "print or copy only the provided line number")
 	rootCmd.AddCommand(showCmd)
 }

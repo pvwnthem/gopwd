@@ -111,7 +111,9 @@ To insert a password into your vault for a specific service, use the following c
 gopwd insert <service> 
 ```
 
-- `<service>`: Specify the service for which the password is used. The service name can be anything, including a website, username, or any other identifier. **Important:** The service name cannot contain spaces. Use a dash (-) instead. Special characters other than a dash or underscore are also not allowed.
+- `<service>`: Specify the service for which the password is used. The service name can be anything, including a website, username, or any other identifier.
+- `-c`, `--copy` (optional): Copy the password to your clipboard and don't show it on stdout. 
+**Important:** The service name cannot contain spaces. Use a dash (-) instead. Special characters other than a dash or underscore are also not allowed.
 
 You can nest the service names to organize your passwords. For example, if you have multiple GitHub passwords, you can set one as `github/personal` and another as `github/work`. Nesting is optional and is useful for organizational purposes. If you don't want to use this feature, simply use the service name as the service identifier.
 
@@ -125,6 +127,7 @@ gopwd generate <service> <length>
 
 - `<service>`: Specify the service for which the password is used.
 - `<length>`: Specify the length of the generated password.
+- `-c`, `--copy` (optional): Copy the password to your clipboard and don't show it on stdout.
 - `-m`, `--memorable` (optional): Generate a more memorable password which includes full words.
 - `--no-symbols` (optional): Generate a password without symbols.
 
