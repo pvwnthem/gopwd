@@ -103,6 +103,8 @@ You can change the config settings anytime using the above commands.
 
 ## Commands
 
+To any command that requires a [Y/n] confirmation to complete, you can add the `--yes`, `-y` command to override that with a yes answer
+
 ### Inserting a Password
 
 To insert a password into your vault for a specific service, use the following command:
