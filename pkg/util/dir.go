@@ -134,26 +134,36 @@ func WriteBytesToFile(path string, data []byte) error {
 	}
 	return nil
 }
-
 func PrintDirectoryTree(dirPath string, indent string) error {
 	entries, err := os.ReadDir(dirPath)
 	if err != nil {
 		return err
 	}
 
-	for i, entry := range entries {
+	for _, entry := range entries {
 		if entry.IsDir() {
-			if i == len(entries)-1 {
-				fmt.Printf("%s└── %s\n", indent, entry.Name())
-			} else {
-				fmt.Printf("%s├── %s\n", indent, entry.Name())
-			}
-		}
-		if entry.IsDir() {
-			subDirPath := filepath.Join(dirPath, entry.Name())
-			err := PrintDirectoryTree(subDirPath, indent+"│   ")
+			hasPassword, err := Exists(filepath.Join(dirPath, entry.Name(), "password"))
 			if err != nil {
-				fmt.Printf("Error printing subdirectory '%s': %v\n", subDirPath, err)
+				fmt.Printf("Error checking if password exists: %v\n", err)
+			}
+
+			subDirs, err := GetNestedDirectories(filepath.Join(dirPath, entry.Name()))
+			if err != nil {
+				fmt.Printf("Error getting nested directories of '%s': %v\n", filepath.Join(dirPath, entry.Name()), err)
+			}
+
+			if hasPassword || len(subDirs) > 0 {
+				if len(subDirs) == 0 {
+					fmt.Printf("%s└── %s (password)\n", indent, entry.Name())
+				} else {
+					fmt.Printf("%s├── %s\n", indent, entry.Name())
+				}
+
+				subDirPath := filepath.Join(dirPath, entry.Name())
+				err = PrintDirectoryTree(subDirPath, indent+"│   ")
+				if err != nil {
+					fmt.Printf("Error printing subdirectory '%s': %v\n", subDirPath, err)
+				}
 			}
 		}
 	}

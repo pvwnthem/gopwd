@@ -60,8 +60,8 @@ var rmCmd = &cobra.Command{
 				return fmt.Errorf("failed to get nested directories: %w", err)
 			}
 
-			if Recursive {
-				err = util.RemoveDirectory(passwordPath)
+			if Recursive || len(nestedDirs) == 0 {
+				err = util.RemoveDirectory(filepath.Join(vaultPath, site))
 				if err != nil {
 					return fmt.Errorf("failed to remove password directory: %w", err)
 				}
