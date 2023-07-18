@@ -26,9 +26,15 @@ var removeCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrVaultDoesNotExist, vaultPath)
 		}
 
-		action, err := util.ConfirmAction()
-		if err != nil {
-			return fmt.Errorf(constants.ErrActionConfirm, err)
+		var action bool
+
+		if !Force {
+			action, err = util.ConfirmAction()
+			if err != nil {
+				return fmt.Errorf(constants.ErrActionConfirm, err)
+			}
+		} else {
+			action = true
 		}
 
 		if action {
@@ -36,9 +42,9 @@ var removeCmd = &cobra.Command{
 			if err != nil {
 				return fmt.Errorf("failed to remove vault: %w", err)
 			}
-		}
 
-		fmt.Printf("Successfully removed vault at %s", vaultPath)
+			fmt.Printf("Successfully removed vault at %s", vaultPath)
+		}
 
 		return nil
 	},

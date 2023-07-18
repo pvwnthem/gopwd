@@ -38,9 +38,15 @@ var copyCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrPasswordDoesNotExist)
 		}
 
-		action, err := util.ConfirmAction()
-		if err != nil {
-			return fmt.Errorf(constants.ErrActionConfirm, err)
+		var action bool
+
+		if !Force {
+			action, err = util.ConfirmAction()
+			if err != nil {
+				return fmt.Errorf(constants.ErrActionConfirm, err)
+			}
+		} else {
+			action = true
 		}
 
 		if action {
@@ -54,9 +60,10 @@ var copyCmd = &cobra.Command{
 			if err != nil {
 				return fmt.Errorf("failed to copy password: %w", err)
 			}
+
+			fmt.Printf("Copied password from %s to %s \n", site, destination)
 		}
 
-		fmt.Printf("Copied password from %s to %s \n", site, destination)
 		return nil
 	},
 }

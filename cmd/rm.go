@@ -41,9 +41,15 @@ var rmCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrPasswordDoesNotExist)
 		}
 
-		action, err := util.ConfirmAction()
-		if err != nil {
-			return fmt.Errorf(constants.ErrActionConfirm, err)
+		var action bool
+
+		if !Force {
+			action, err = util.ConfirmAction()
+			if err != nil {
+				return fmt.Errorf(constants.ErrActionConfirm, err)
+			}
+		} else {
+			action = true
 		}
 
 		// Remove the password directory
@@ -72,8 +78,9 @@ var rmCmd = &cobra.Command{
 					}
 				}
 			}
+
+			fmt.Printf("Removed password for %s", site)
 		}
-		fmt.Printf("Removed password for %s", site)
 
 		return nil
 	},

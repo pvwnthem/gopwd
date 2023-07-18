@@ -10,7 +10,8 @@ import (
 var configFile string
 
 var (
-	Path string
+	Path  string
+	Force bool
 )
 
 var VaultCmd = &cobra.Command{
@@ -34,5 +35,6 @@ func Execute() {
 
 func init() {
 	VaultCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path to create the vault at")
+	VaultCmd.PersistentFlags().BoolVarP(&Force, "yes", "y", false, "if the command asks for confirmation, force it to yes")
 
 }

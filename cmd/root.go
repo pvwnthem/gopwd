@@ -19,6 +19,7 @@ var (
 	Path    string
 	Version string
 	Copy    bool
+	Force   bool
 )
 
 var rootCmd = &cobra.Command{
@@ -87,4 +88,5 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&Path, "path", "p", "", "The path of the vault")
 	rootCmd.PersistentFlags().StringVar(&configFile, "config", "", "Config file (default is $HOME/.gopwd/config.json)")
 	rootCmd.PersistentFlags().BoolVarP(&Copy, "copy", "c", false, "copy the password to the clipboard and don't print it to stdout")
+	rootCmd.PersistentFlags().BoolVarP(&Force, "yes", "y", false, "if the command asks for confirmation, force it to yes")
 }
