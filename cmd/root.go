@@ -22,10 +22,11 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:     "gopwd",
-	Short:   "A cli password manager written in go",
-	Long:    "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
-	Version: Version,
+	Use:          "gopwd",
+	Short:        "A cli password manager written in go",
+	Long:         "gopwd is an encrypted cli password manager (similar to password-store) written in golang",
+	Version:      Version,
+	SilenceUsage: true,
 
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Check if the vault exists
@@ -44,6 +45,14 @@ var rootCmd = &cobra.Command{
 		}
 		if !isVault {
 			return fmt.Errorf("provided path is not a vault, does it have a .vault file?")
+		}
+
+		nestedDirs, err := util.GetNestedDirectories(Path)
+		if err != nil {
+			return fmt.Errorf("error getting nested directories of vault %w", err)
+		}
+		if nestedDirs == nil {
+			return fmt.Errorf("provided vault was found but is empty")
 		}
 
 		fmt.Println(strings.Split(Path, "/")[len(strings.Split(Path, "/"))-1]) // print name of vault on top of dir structure
