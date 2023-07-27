@@ -1,3 +1,5 @@
+![Lines of code](https://img.shields.io/tokei/lines/github/pvwnthem/gopwd)
+
 ## Introduction
 gopwd is a (cross platform 😁) command-line password manager written in Golang. It provides a secure, convenient, and portable way to store and manage your passwords.
 
