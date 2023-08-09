@@ -39,6 +39,7 @@ var auditCommand = &cobra.Command{
 
 		GPGModule := crypto.New(GPGID, crypto.Config{})
 
+		// array of passwords
 		passwords := make(map[string]string)
 		for _, d := range dir {
 			splitFilePath := strings.Split(d, "/")
@@ -54,14 +55,24 @@ var auditCommand = &cobra.Command{
 					return fmt.Errorf(constants.ErrPasswordDecryption, err)
 				}
 
-				passwords[d] = string(decrypted)
+				passwords[splitFilePath[len(splitFilePath)-2]] = string(decrypted)
 			}
 		}
 
-		auditor := audit.New(&audit.Provider{})
+		auditor := audit.New(&audit.Provider{
+			Name: "default",
+			Process: func(in string) bool {
+				return len(in) < 32
+			},
+		})
 
 		for k, v := range passwords {
-			fmt.Printf("%s %s\n", k, auditor.Process(v))
+			// print either secure or insecure next to the password name
+			if auditor.Process(v) {
+				fmt.Printf("%s: secure\n", k)
+			} else {
+				fmt.Printf("%s: insecure\n", k)
+			}
 		}
 
 		return nil
