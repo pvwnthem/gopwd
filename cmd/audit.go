@@ -73,15 +73,7 @@ var auditCommand = &cobra.Command{
 			}
 		}
 
-		auditor := audit.New(&audit.Provider{
-			Name: "default",
-			Process: func(in string) (bool, string) {
-				if len(in) <= 32 {
-					return false, fmt.Sprintf("password is too short (%d characters) should be at least 32", len(in))
-				}
-				return true, fmt.Sprintf("password is secure (%d characters)", len(in))
-			},
-		})
+		auditor := audit.New(audit.DefaultProvider)
 
 		for k, v := range passwords {
 			secure, message := auditor.Process(v)
