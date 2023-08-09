@@ -95,6 +95,23 @@ func ReadBytesFromFile(filePath string) ([]byte, error) {
 	return content, nil
 }
 
+func WalkDir(path string) ([]string, error) {
+	var files []string
+
+	err := filepath.Walk(path, func(path string, info fs.FileInfo, err error) error {
+		if !info.IsDir() {
+			files = append(files, path)
+		}
+		return nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return files, nil
+}
+
 func ReadFile(path string) ([]byte, error) {
 	file, err := os.ReadFile(path)
 	if err != nil {
