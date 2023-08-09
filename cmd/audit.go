@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/pvwnthem/gopwd/constants"
+	"github.com/pvwnthem/gopwd/pkg/audit"
 	"github.com/pvwnthem/gopwd/pkg/crypto"
 	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
@@ -56,6 +57,8 @@ var auditCommand = &cobra.Command{
 				passwords[d] = string(decrypted)
 			}
 		}
+
+		auditor := audit.New(&audit.Provider{})
 
 		return nil
 	},
