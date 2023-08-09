@@ -60,6 +60,10 @@ var auditCommand = &cobra.Command{
 
 		auditor := audit.New(&audit.Provider{})
 
+		for k, v := range passwords {
+			fmt.Printf("%s %s\n", k, auditor.Process(v))
+		}
+
 		return nil
 	},
 }
