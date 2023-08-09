@@ -54,7 +54,7 @@ var auditCommand = &cobra.Command{
 				if err != nil {
 					return fmt.Errorf(constants.ErrPasswordDecryption, err)
 				}
-
+				// this is probably a bad way to do this
 				a := strings.Split(vaultPath, "/")
 				m := make(map[string]bool)
 
@@ -76,7 +76,7 @@ var auditCommand = &cobra.Command{
 		auditor := audit.New(&audit.Provider{
 			Name: "default",
 			Process: func(in string) (bool, string) {
-				if len(in) < 32 {
+				if len(in) <= 32 {
 					return false, fmt.Sprintf("password is too short (%d characters) should be at least 32", len(in))
 				}
 				return true, fmt.Sprintf("password is secure (%d characters)", len(in))
