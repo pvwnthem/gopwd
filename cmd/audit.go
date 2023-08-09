@@ -55,7 +55,21 @@ var auditCommand = &cobra.Command{
 					return fmt.Errorf(constants.ErrPasswordDecryption, err)
 				}
 
-				passwords[splitFilePath[len(splitFilePath)-2]] = string(decrypted)
+				a := strings.Split(vaultPath, "/")
+				m := make(map[string]bool)
+
+				for _, item := range a {
+					m[item] = true
+				}
+
+				var diff []string
+				for _, item := range splitFilePath {
+					if _, ok := m[item]; !ok {
+						diff = append(diff, item)
+					}
+				}
+
+				passwords[strings.Join(diff[:len(diff)-1], "/")] = string(decrypted)
 			}
 		}
 
