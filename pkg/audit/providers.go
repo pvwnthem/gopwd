@@ -3,65 +3,53 @@ package audit
 import (
 	"fmt"
 	"strings"
+	"unicode"
 )
 
 var DefaultProvider *Provider = &Provider{
 	Name: "default",
 	Process: func(in string) (bool, string) {
-		message := make([]string, 0)
-		secure := true
-		if len(in) <= 32 {
-			message = append(message, fmt.Sprintf("password is too short (%d characters) should be at least 32", len(in)))
+
+		var (
+			secure  bool = true
+			message []string
+
+			symbols int
+			digits  int
+			upper   int
+		)
+
+		if len(in) < 32 {
+			message = append(message, fmt.Sprintf("Password is too short (%d characters), should be at least 32", len(in)))
 			secure = false
 		}
 
-		// symbols check
-		symbols := 0
 		for _, c := range in {
-			if c >= '!' && c <= '/' {
+			switch {
+			case unicode.IsSymbol(c) || unicode.IsPunct(c):
 				symbols++
-			}
-			if c >= ':' && c <= '@' {
-				symbols++
-			}
-			if c >= '[' && c <= '`' {
-				symbols++
-			}
-			if c >= '{' && c <= '~' {
-				symbols++
+			case unicode.IsDigit(c):
+				digits++
+			case unicode.IsUpper(c):
+				upper++
 			}
 		}
 
 		if symbols < 1 {
-			message = append(message, fmt.Sprintf("password should contain at least 1 symbol, found %d", symbols))
+			message = append(message, "Password should contain at least one symbol")
 			secure = false
-		}
-
-		// digits check
-		digits := 0
-		for _, c := range in {
-			if c >= '0' && c <= '9' {
-				digits++
-			}
 		}
 
 		if digits < 1 {
-			message = append(message, fmt.Sprintf("password should contain at least 1 digits, found %d", digits))
+			message = append(message, "Password should contain at least one digit")
 			secure = false
 		}
 
-		// uppercase check
-		uppercase := 0
-		for _, c := range in {
-			if c >= 'A' && c <= 'Z' {
-				uppercase++
-			}
-		}
-
-		if uppercase < 1 {
-			message = append(message, fmt.Sprintf("password should contain at least 1 uppercase letter, found %d", uppercase))
+		if upper < 1 {
+			message = append(message, "Password should contain at least one upper case letter")
 			secure = false
 		}
+
 		return secure, strings.Join(message, ", ")
 	},
 }
