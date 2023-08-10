@@ -15,7 +15,7 @@ const (
 	CharAll      = Digits + Upper + Lower + Syms
 )
 
-func NewGenerator(length int, characters string) *Generator {
+func New(length int, characters string) *Generator {
 	return &Generator{
 		length:     length,
 		characters: characters,

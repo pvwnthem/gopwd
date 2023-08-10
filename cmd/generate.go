@@ -65,7 +65,7 @@ var generateCmd = &cobra.Command{
 		} else {
 			charSet = pwdgen.CharAlphaNum
 		}
-		generator := pwdgen.NewGenerator(len, charSet)
+		generator := pwdgen.New(len, charSet)
 
 		var password string
 		if Memorable {
