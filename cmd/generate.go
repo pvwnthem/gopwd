@@ -15,7 +15,7 @@ import (
 
 var (
 	Memorable bool
-	Symbols   bool
+	NoSymbols bool
 )
 
 var generateCmd = &cobra.Command{
@@ -59,10 +59,17 @@ var generateCmd = &cobra.Command{
 			util.RemoveDirectory(dirPath)
 			return fmt.Errorf("failed to convert length to int: %w", err)
 		}
-		generator := pwdgen.NewGenerator(len, pwdgen.CharAll)
+		var charSet string
+		if !NoSymbols {
+			charSet = pwdgen.CharAll
+		} else {
+			charSet = pwdgen.CharAlphaNum
+		}
+		generator := pwdgen.NewGenerator(len, charSet)
+
 		var password string
 		if Memorable {
-			password, err = generator.GenerateMemorable(true, !Symbols)
+			password, err = generator.GenerateMemorable(true, !NoSymbols)
 		} else {
 			password, err = generator.Generate()
 		}
@@ -112,6 +119,6 @@ var generateCmd = &cobra.Command{
 
 func init() {
 	generateCmd.Flags().BoolVarP(&Memorable, "memorable", "m", false, "Generate a memorable password")
-	generateCmd.Flags().BoolVar(&Symbols, "no-symbols", false, "Generate a password with no symbols")
+	generateCmd.Flags().BoolVar(&NoSymbols, "no-symbols", false, "Generate a password with no symbols")
 	rootCmd.AddCommand(generateCmd)
 }
