@@ -192,6 +192,12 @@ To edit a password or add metadata such as an email or username, use the followi
 gopwd edit <service>
 ```
 
+## Auditing Your Passwords
+```
+gopwd audit
+```
+- `--hibp` (optional): Check your passwords against the Have I Been Pwned database. This will check all passwords in your vault against the database and return the number of times each password has been pwned. This will not send your passwords to the database, but rather a hash of the first 5 characters of your password. This is the same method used by 1Password and other password managers.
+
 ## Copy a Password to Another Service
 
 To copy a password from one service to another, use the following command:
