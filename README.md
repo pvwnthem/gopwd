@@ -8,6 +8,13 @@ gopwd is a (cross platform 😁) command-line password manager written in Golang
 
 To install and use `gopwd`, follow the steps below:
 
+### Easy Installation
+Must have `go` installed
+```bash
+go install github.com/pvwnthem/gopwd@latest
+```
+
+## Manual Installation
 ### Step 1: Download the Binary
 
 1. Go to the [GitHub releases page](https://github.com/pvwnthem/gopwd/releases) for `gopwd`.
