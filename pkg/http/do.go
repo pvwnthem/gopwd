@@ -2,7 +2,7 @@ package http
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 
@@ -25,7 +25,7 @@ func (c *Client) Do(req *http.Request) ([]string, error) {
 		return nil, fmt.Errorf(constants.ErrUnexpectedApiResponse, resp.StatusCode)
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
