@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"unicode"
+
+	"github.com/pvwnthem/gopwd/pkg/hibp"
 )
 
 var DefaultProvider *Provider = &Provider{
@@ -51,5 +53,21 @@ var DefaultProvider *Provider = &Provider{
 		}
 
 		return secure, strings.Join(message, ", ")
+	},
+}
+
+var HibpProvider *Provider = &Provider{
+	Name: "hibp (haveibeenpwned.com)",
+	Process: func(in string) (bool, string) {
+		check, err := hibp.Check(in)
+		if err != nil {
+			return false, err.Error()
+		}
+
+		if check {
+			return false, "Password has been compromised"
+		} else {
+			return true, ""
+		}
 	},
 }

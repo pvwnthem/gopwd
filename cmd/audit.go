@@ -12,6 +12,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	Hibp bool
+)
+
 var auditCommand = &cobra.Command{
 	Use:   "audit",
 	Short: "Audit the vault for weak passwords",
@@ -75,12 +79,25 @@ var auditCommand = &cobra.Command{
 
 		auditor := audit.New(audit.DefaultProvider)
 
-		for k, v := range passwords {
-			secure, message := auditor.Process(v)
-			if secure {
-				fmt.Printf("%s: secure\n", k)
-			} else {
-				fmt.Printf("%s: insecure, %s\n", k, message)
+		if Hibp {
+			auditor = audit.New(audit.HibpProvider)
+			for k, v := range passwords {
+				secure, message := auditor.Process(v)
+				if secure {
+					fmt.Printf("%s: secure\n", k)
+				} else {
+					fmt.Printf("%s: insecure, %s\n", k, message)
+				}
+			}
+
+		} else {
+			for k, v := range passwords {
+				secure, message := auditor.Process(v)
+				if secure {
+					fmt.Printf("%s: secure\n", k)
+				} else {
+					fmt.Printf("%s: insecure, %s\n", k, message)
+				}
 			}
 		}
 
@@ -89,5 +106,6 @@ var auditCommand = &cobra.Command{
 }
 
 func init() {
+	auditCommand.Flags().BoolVar(&Hibp, "hibp", false, "Check passwords against haveibeenpwned.com")
 	rootCmd.AddCommand(auditCommand)
 }
