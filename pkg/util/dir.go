@@ -170,7 +170,11 @@ func PrintDirectoryTree(dirPath string, indent string) error {
 			}
 
 			if hasPassword || len(subDirs) > 0 {
-				if len(subDirs) == 0 {
+				exists, err := Exists(filepath.Join(dirPath, entry.Name(), "password"))
+				if err != nil {
+					fmt.Printf("Error checking if password exists: %v\n", err)
+				}
+				if exists {
 					fmt.Printf("%s└── %s (password)\n", indent, entry.Name())
 				} else {
 					fmt.Printf("%s├── %s\n", indent, entry.Name())
