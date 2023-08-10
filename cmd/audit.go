@@ -77,27 +77,22 @@ var auditCommand = &cobra.Command{
 			}
 		}
 
-		auditor := audit.New(audit.DefaultProvider)
+		var provider *audit.Provider
 
 		if Hibp {
-			auditor = audit.New(audit.HibpProvider)
-			for k, v := range passwords {
-				secure, message := auditor.Process(v)
-				if secure {
-					fmt.Printf("%s: secure\n", k)
-				} else {
-					fmt.Printf("%s: insecure, %s\n", k, message)
-				}
-			}
-
+			provider = audit.HibpProvider
 		} else {
-			for k, v := range passwords {
-				secure, message := auditor.Process(v)
-				if secure {
-					fmt.Printf("%s: secure\n", k)
-				} else {
-					fmt.Printf("%s: insecure, %s\n", k, message)
-				}
+			provider = audit.DefaultProvider
+		}
+
+		auditor := audit.New(provider)
+
+		for k, v := range passwords {
+			secure, message := auditor.Process(v)
+			if secure {
+				fmt.Printf("%s: secure\n", k)
+			} else {
+				fmt.Printf("%s: insecure, %s\n", k, message)
 			}
 		}
 
