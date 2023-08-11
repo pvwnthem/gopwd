@@ -177,6 +177,7 @@ gopwd show <service>
 ```
 
 - `<service>`: Specify the service for which you want to view the password.
+- `-q`, `--qr` (optional): Show the password as a QR code.
 - `-c`, `--copy` (optional): Copy the password to your clipboard and don't show it on stdout. 
 - `-l`, `--line` `<line>` (optional): Print or copy only a certain line of the password file. This is useful if you have metadata in your files that you dont want copied or shown (or the other way around). When this flag is not provided, the whole file is copied or printed.
 

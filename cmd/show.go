@@ -2,18 +2,21 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/atotto/clipboard"
 	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/pkg/crypto"
+	"github.com/pvwnthem/gopwd/pkg/qr"
 	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
 )
 
 var (
 	Line int
+	Qr   bool
 )
 
 var showCmd = &cobra.Command{
@@ -61,6 +64,11 @@ var showCmd = &cobra.Command{
 			return fmt.Errorf(constants.ErrPasswordDecryption, err)
 		}
 
+		if Qr {
+			qr.Generate(string(decrypted), qr.M, os.Stdout)
+			return nil
+		}
+
 		// If the clipboard flag is set, copy the password to the clipboard
 		if Copy {
 			err = clipboard.WriteAll(string(decrypted))
@@ -98,5 +106,6 @@ var showCmd = &cobra.Command{
 
 func init() {
 	showCmd.Flags().IntVarP(&Line, "line", "l", 0, "print or copy only the provided line number")
+	showCmd.Flags().BoolVarP(&Qr, "qr", "q", false, "print the password as a QR code")
 	rootCmd.AddCommand(showCmd)
 }
