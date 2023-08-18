@@ -2,7 +2,6 @@ package audit
 
 import (
 	"fmt"
-	"strings"
 	"unicode"
 
 	"github.com/pvwnthem/gopwd/pkg/hibp"
@@ -10,7 +9,7 @@ import (
 
 var DefaultProvider *Provider = &Provider{
 	Name: "default",
-	Process: func(in string) (bool, string) {
+	Process: func(in string) (bool, []string) {
 
 		var (
 			secure  bool = true
@@ -52,22 +51,22 @@ var DefaultProvider *Provider = &Provider{
 			secure = false
 		}
 
-		return secure, strings.Join(message, ", ")
+		return secure, message
 	},
 }
 
 var HibpProvider *Provider = &Provider{
 	Name: "hibp (haveibeenpwned.com)",
-	Process: func(in string) (bool, string) {
+	Process: func(in string) (bool, []string) {
 		check, err := hibp.Check(in)
 		if err != nil {
-			return false, err.Error()
+			return false, []string{err.Error()}
 		}
 
 		if check {
-			return false, "Password has been compromised"
+			return false, []string{"Password has been compromised"}
 		} else {
-			return true, ""
+			return true, []string{""}
 		}
 	},
 }

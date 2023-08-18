@@ -7,6 +7,7 @@ import (
 
 	"github.com/pvwnthem/gopwd/constants"
 	"github.com/pvwnthem/gopwd/pkg/audit"
+	"github.com/pvwnthem/gopwd/pkg/colors"
 	"github.com/pvwnthem/gopwd/pkg/crypto"
 	"github.com/pvwnthem/gopwd/pkg/util"
 	"github.com/spf13/cobra"
@@ -88,11 +89,14 @@ var auditCommand = &cobra.Command{
 		auditor := audit.New(provider)
 
 		for k, v := range passwords {
-			secure, message := auditor.Process(v)
+			secure, messages := auditor.Process(v)
 			if secure {
-				fmt.Printf("%s: secure\n", k)
+				fmt.Print(colors.Greenf("%s: secure\n", k))
 			} else {
-				fmt.Printf("%s: insecure, %s\n", k, message)
+				fmt.Print(colors.Redf("%s: insecure\n", k))
+				for _, message := range messages {
+					fmt.Printf(">	%s\n", message)
+				}
 			}
 		}
 
