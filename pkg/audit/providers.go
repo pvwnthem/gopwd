@@ -9,7 +9,7 @@ import (
 
 var DefaultProvider *Provider = &Provider{
 	Name: "default",
-	Process: func(in string) (bool, []string) {
+	Process: func(in string) (bool, []string, error) {
 
 		var (
 			secure  bool = true
@@ -51,22 +51,22 @@ var DefaultProvider *Provider = &Provider{
 			secure = false
 		}
 
-		return secure, message
+		return secure, message, nil
 	},
 }
 
 var HibpProvider *Provider = &Provider{
 	Name: "hibp (haveibeenpwned.com)",
-	Process: func(in string) (bool, []string) {
+	Process: func(in string) (bool, []string, error) {
 		check, err := hibp.Check(in)
 		if err != nil {
-			return false, []string{err.Error()}
+			return false, nil, err
 		}
 
 		if check {
-			return false, []string{"Password has been compromised"}
+			return false, []string{"Password has been compromised"}, nil
 		} else {
-			return true, []string{""}
+			return true, []string{""}, nil
 		}
 	},
 }

@@ -89,7 +89,10 @@ var auditCommand = &cobra.Command{
 		auditor := audit.New(provider)
 
 		for k, v := range passwords {
-			secure, messages := auditor.Process(v)
+			secure, messages, err := auditor.Process(v)
+			if err != nil {
+				return fmt.Errorf("error processing audit provider %s : %v", provider.Name, err)
+			}
 			if secure {
 				fmt.Print(colors.Greenf("%s: secure\n", k))
 			} else {
