@@ -14,7 +14,13 @@ import (
 )
 
 var (
-	Hibp bool
+	Hibp   bool
+	Custom bool
+
+	min_length  int
+	min_digits  int
+	min_symbols int
+	min_upper   int
 )
 
 var auditCommand = &cobra.Command{
@@ -82,6 +88,8 @@ var auditCommand = &cobra.Command{
 
 		if Hibp {
 			provider = audit.HibpProvider
+		} else if Custom {
+			provider = audit.CustomProvider(min_length, min_symbols, min_digits, min_upper)
 		} else {
 			provider = audit.DefaultProvider
 		}
@@ -108,6 +116,14 @@ var auditCommand = &cobra.Command{
 }
 
 func init() {
+	// only one provider at a time is supported currently
 	auditCommand.Flags().BoolVar(&Hibp, "hibp", false, "Check passwords against haveibeenpwned.com")
+	auditCommand.Flags().BoolVar(&Custom, "custom", false, "Use a custom ruleset for auditing passwords")
+
+	auditCommand.Flags().IntVarP(&min_length, "length", "l", 32, "Minimum allowed length of the password (default is 32)")
+	auditCommand.Flags().IntVarP(&min_digits, "digits", "d", 1, "Minimum amount of digits allowed in the password (default is 1)")
+	auditCommand.Flags().IntVarP(&min_symbols, "symbols", "s", 1, "Miniumum amount of symbols allowed in the password (default is 1)")
+	auditCommand.Flags().IntVarP(&min_upper, "upper", "u", 1, "Miniumum amount of uppercase characters allowed in the password (default is 1)")
+
 	rootCmd.AddCommand(auditCommand)
 }

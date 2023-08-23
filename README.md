@@ -205,7 +205,11 @@ gopwd edit <service>
 gopwd audit
 ```
 - `--hibp` (optional): Check your passwords against the Have I Been Pwned database. This will check all passwords in your vault against the database and return the number of times each password has been pwned. This will not send your passwords to the database, but rather a hash of the first 5 characters of your password. This is the same method used by 1Password and other password managers.
-
+- `--custom` (optional): Check your passwords against a custom ruleset. This should be used in combination with the below options unless you just want the default values. (if you just want the default values dont use --custom as it uses the same values as the default provider)
+- `-l`, `--length` (optional): Set the minimum length for the passwords audited by the custom provider.
+- `-d`, `--digits` (optional): Set the minimum amount of digits allowed ifor the passwords audited by the custom provider.
+- `-s`, `--symbols`(optional): Set the minumum amount of symbols/special characters allowed for the passwords audited by the custom provider.
+- `-u`, `--upper`  (optional): Set the minimum amount of upper case characters allowed for the passwords audited by the custom provider.
 ## Copy a Password to Another Service
 
 To copy a password from one service to another, use the following command:
