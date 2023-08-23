@@ -71,7 +71,7 @@ var HibpProvider *Provider = &Provider{
 	},
 }
 
-func CustomProvider(min_length int, min_symbols int, min_digits int, min_upper int) *Provider {
+func NewCustomProvider(min_length int, min_symbols int, min_digits int, min_upper int) *Provider {
 	// Default values for params are handled by the caller
 	return &Provider{
 		Name: "custom provider",

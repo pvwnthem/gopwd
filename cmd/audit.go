@@ -89,7 +89,7 @@ var auditCommand = &cobra.Command{
 		if Hibp {
 			provider = audit.HibpProvider
 		} else if Custom {
-			provider = audit.CustomProvider(min_length, min_symbols, min_digits, min_upper)
+			provider = audit.NewCustomProvider(min_length, min_symbols, min_digits, min_upper)
 		} else {
 			provider = audit.DefaultProvider
 		}
