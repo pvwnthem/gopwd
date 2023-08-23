@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	gopwdhttp "github.com/pvwnthem/gopwd/pkg/http"
+	internalhttp "github.com/pvwnthem/gopwd/pkg/http"
 )
 
 func Check(p string) (bool, error) {
@@ -27,7 +27,7 @@ func Check(p string) (bool, error) {
 		return false, err
 	}
 
-	httpClient := gopwdhttp.New(http.DefaultClient)
+	httpClient := internalhttp.New(http.DefaultClient)
 
 	request, err := httpClient.Request("GET", url.String()+fmt.Sprintf("range/%s", prefix), nil)
 	if err != nil {
