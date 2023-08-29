@@ -10,7 +10,7 @@ import (
 )
 
 var copyCmd = &cobra.Command{
-	Use:   "cp [site] [new-site]",
+	Use:   "cp [password] [new-password]",
 	Short: "Copies a password from one site to another",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {

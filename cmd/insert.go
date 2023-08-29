@@ -12,7 +12,7 @@ import (
 )
 
 var insertCmd = &cobra.Command{
-	Use:   "insert [site] [flags]",
+	Use:   "insert [password] [flags]",
 	Short: "Inserts a new password into the vault",
 	Args:  cobra.ExactArgs(1),
 
