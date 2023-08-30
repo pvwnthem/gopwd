@@ -86,14 +86,6 @@ var auditCommand = &cobra.Command{
 
 		var provider *audit.Provider
 
-		if Hibp {
-			provider = audit.HibpProvider
-		} else if Custom {
-			provider = audit.NewCustomProvider(min_length, min_symbols, min_digits, min_upper)
-		} else {
-			provider = audit.DefaultProvider
-		}
-
 		auditor := audit.New(provider)
 
 		// check for duplicates, returns the names of the duplicate passwords and a bool indicating whether or not there are any duplicates
