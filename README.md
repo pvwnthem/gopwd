@@ -218,6 +218,11 @@ To copy a password from one service to another, use the following command:
 gopwd cp <service> <new service>
 ```
 
+## List Passwords for a Certain Service
+```bash
+gopwd ls <service>
+```
+
 ### Removing a Vault
 
 To remove a vault, use the following command:
