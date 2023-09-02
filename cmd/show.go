@@ -98,7 +98,7 @@ var showCmd = &cobra.Command{
 			return nil
 		}
 
-		fmt.Printf("%s \n", decrypted)
+		fmt.Printf("%s", decrypted)
 
 		return nil
 	},
