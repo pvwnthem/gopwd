@@ -91,7 +91,7 @@ var auditCommand = &cobra.Command{
 		// check for duplicates, returns the names of the duplicate passwords and a bool indicating whether or not there are any duplicates
 		/*
 			it should be noted that this function will not detect duplicate passwords that are with other data in their file
-			this could be fix by iterating throught file lines as well but that would still not be 100% accurate
+			this could be fix by iterating throughout file lines as well but that would still not be 100% accurate
 			checking with a deep search might return emails or usernames given as duplicate passwords and there is no way to distinguish these from passwords.
 		*/
 		output1, output2, duplicate := audit.CheckDuplicates(passwords)
