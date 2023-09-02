@@ -61,7 +61,6 @@ var rmCmd = &cobra.Command{
 
 		if action {
 			nestedDirs, err := util.GetNestedDirectories(passwordParentFolderPath)
-			fmt.Println(nestedDirs)
 			if err != nil {
 				return fmt.Errorf("failed to get nested directories: %w", err)
 			}
