@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"sync"
 )
 
 func GetHomeDir() string {
@@ -158,45 +157,38 @@ func PrintDirectoryTree(dirPath string, indent string) error {
 		return err
 	}
 
-	var wg sync.WaitGroup
 	for _, entry := range entries {
 		if entry.IsDir() {
-			wg.Add(1)
-			go func(entry os.DirEntry) {
-				defer wg.Done()
+			hasPassword, err := Exists(filepath.Join(dirPath, entry.Name(), "password"))
+			if err != nil {
+				fmt.Printf("Error checking if password exists: %v\n", err)
+			}
 
-				hasPassword, err := Exists(filepath.Join(dirPath, entry.Name(), "password"))
+			subDirs, err := GetNestedDirectories(filepath.Join(dirPath, entry.Name()))
+			if err != nil {
+				fmt.Printf("Error getting nested directories of '%s': %v\n", filepath.Join(dirPath, entry.Name()), err)
+			}
+
+			if hasPassword || len(subDirs) > 0 {
+				exists, err := Exists(filepath.Join(dirPath, entry.Name(), "password"))
 				if err != nil {
 					fmt.Printf("Error checking if password exists: %v\n", err)
 				}
+				if exists {
+					fmt.Printf("%s└── %s (password)\n", indent, entry.Name())
+				} else {
+					fmt.Printf("%s├── %s\n", indent, entry.Name())
+				}
 
-				subDirs, err := GetNestedDirectories(filepath.Join(dirPath, entry.Name()))
+				subDirPath := filepath.Join(dirPath, entry.Name())
+				err = PrintDirectoryTree(subDirPath, indent+"│   ")
 				if err != nil {
-					fmt.Printf("Error getting nested directories of '%s': %v\n", filepath.Join(dirPath, entry.Name()), err)
+					fmt.Printf("Error printing subdirectory '%s': %v\n", subDirPath, err)
 				}
-
-				if hasPassword || len(subDirs) > 0 {
-					exists, err := Exists(filepath.Join(dirPath, entry.Name(), "password"))
-					if err != nil {
-						fmt.Printf("Error checking if password exists: %v\n", err)
-					}
-					if exists {
-						fmt.Printf("%s└── %s (password)\n", indent, entry.Name())
-					} else {
-						fmt.Printf("%s├── %s\n", indent, entry.Name())
-					}
-
-					subDirPath := filepath.Join(dirPath, entry.Name())
-					err = PrintDirectoryTree(subDirPath, indent+"│   ")
-					if err != nil {
-						fmt.Printf("Error printing subdirectory '%s': %v\n", subDirPath, err)
-					}
-				}
-			}(entry)
+			}
 		}
 	}
 
-	wg.Wait()
 	return nil
 }
 
