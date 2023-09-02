@@ -1,6 +1,7 @@
 ![GitHub go.mod Go version (subdirectory of monorepo)](https://img.shields.io/github/go-mod/go-version/pvwnthem/gopwd)
 ![GitHub release (with filter)](https://img.shields.io/github/v/release/pvwnthem/gopwd)
 [![Gopwd](https://circleci.com/gh/pvwnthem/gopwd.svg?style=svg)](https://github.com/pvwnthem/gopwd)
+[![Go Report Card](https://goreportcard.com/badge/github.com/pvwnthem/gopwd)](https://goreportcard.com/report/github.com/pvwnthem/gopwd)
 
 ## Introduction
 gopwd is a (cross platform 😁) command-line password manager written in Golang. It provides a secure, convenient, and portable way to store and manage your passwords.
