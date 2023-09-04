@@ -1,6 +1,10 @@
 package colors
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/torbenconto/zeus"
+)
 
 const (
 	Red   = "\033[31m"
@@ -9,9 +13,9 @@ const (
 )
 
 func Redf(format string, a ...interface{}) string {
-	return Red + fmt.Sprintf(format, a...) + Reset
+	return zeus.Concat(Red, fmt.Sprintf(format, a...), Reset)
 }
 
 func Greenf(format string, a ...interface{}) string {
-	return Green + fmt.Sprintf(format, a...) + Reset
+	return zeus.Concat(Green, fmt.Sprintf(format, a...), Reset)
 }

@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/torbenconto/zeus"
 )
 
 func GetHomeDir() string {
@@ -181,7 +183,7 @@ func PrintDirectoryTree(dirPath string, indent string) error {
 				}
 
 				subDirPath := filepath.Join(dirPath, entry.Name())
-				err = PrintDirectoryTree(subDirPath, indent+"│   ")
+				err = PrintDirectoryTree(subDirPath, zeus.Concat(indent, "│   "))
 				if err != nil {
 					fmt.Printf("Error printing subdirectory '%s': %v\n", subDirPath, err)
 				}
